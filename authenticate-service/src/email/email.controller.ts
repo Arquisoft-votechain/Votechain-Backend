@@ -1,8 +1,10 @@
 import { Body, Controller, Post, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { EmailService } from './email.service';
 import { EmailRequest } from './dto/emaiRequest.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 
+@ApiTags('email')
 @Controller('api/email')
 export class EmailController {
 
