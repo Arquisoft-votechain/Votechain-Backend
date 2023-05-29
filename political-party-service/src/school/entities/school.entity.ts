@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Classroom } from "src/classroom/entities/classroom.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class School {
@@ -10,4 +11,11 @@ export class School {
         unique: true
     })
     name:string;
+
+    @OneToMany(
+        () => Classroom,
+        (classroom) => classroom.school,
+        { cascade: true }
+    )
+    classrooms:Classroom[]
 }
