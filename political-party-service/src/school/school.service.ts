@@ -6,6 +6,8 @@ import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Classroom } from 'src/classroom/entities/classroom.entity';
 import { RequestClassroomDto } from 'src/classroom/dto/request-classroom.dto';
+import { MasterPoliticalParty } from 'src/master-political-party/entities/master-political-party.entity';
+import { RequestMasterPoliticalPartyDto } from 'src/master-political-party/dto/request-master-political-party.dto';
 
 @Injectable()
 export class SchoolService {
@@ -15,6 +17,8 @@ export class SchoolService {
     private readonly schoolRepository: Repository<School>,
     @InjectRepository(Classroom)
     private readonly classroomRepository: Repository<Classroom>,
+    @InjectRepository(MasterPoliticalParty)
+    private readonly masterPoliticalPartyRepository: Repository<MasterPoliticalParty>,
   ){
 
   }
@@ -39,6 +43,17 @@ export class SchoolService {
     classroom.school = school;
 
     return await this.classroomRepository.save(classroom);
+  }
+
+  async createMasterPoliticalPartyBySchoolId(id: number, requestMasterPoliticalPartyDto: RequestMasterPoliticalPartyDto) {
+    
+    const school = await this.schoolRepository.findOneBy({id});
+    if(!school) throw new NotFoundException(`School with id ${id} not found`);
+
+    const masterPP = this.masterPoliticalPartyRepository.create(requestMasterPoliticalPartyDto);
+    masterPP.school = school;
+
+    return await this.masterPoliticalPartyRepository.save(masterPP);
   }
 
   findAll() {
@@ -73,6 +88,26 @@ export class SchoolService {
     return clasrooms;
   }
 
+  async findAllMasterPoliticalPartiesBySchoolId(id: number) {
+
+    const school = await this.schoolRepository.findOneBy({id});
+    
+    if(!school) throw new NotFoundException(`School with id ${id} not found`);
+
+
+    var masterPPs = [];
+
+    masterPPs = await this.masterPoliticalPartyRepository.find({
+      where:{
+        school:{
+          id:id
+        }
+      }
+    })
+
+    return masterPPs;
+  }
+
   async update(id: number, requestSchoolDto: RequestSchoolDto) {
     
     const school = await this.schoolRepository.preload({
@@ -85,19 +120,19 @@ export class SchoolService {
     return await this.schoolRepository.save(school);
   }
 
-  async updateClassroomByIdAndSchoolId(id: number, clasroomId: number, requestClassroomDto: RequestClassroomDto) {
-    const school = await this.schoolRepository.findOneBy({id});
+  async updateClassroomBySchoolIdAndId(schoolId: number, id: number, requestClassroomDto: RequestClassroomDto) {
+    const school = await this.schoolRepository.findOneBy({id:schoolId});
     
-    if(!school) throw new NotFoundException(`School with id ${id} not found`);
+    if(!school) throw new NotFoundException(`School with id ${schoolId} not found`);
 
     const classroom = await this.classroomRepository.findOneBy({
-      id: clasroomId,
+      id: id,
       school:{
-        id:id
+        id:schoolId
       }
     })
 
-    if(!classroom) throw new NotFoundException(`Classroom with id ${clasroomId} not found`);
+    if(!classroom) throw new NotFoundException(`Classroom with id ${id} not found`);
 
     const clasroomUpdated = await this.classroomRepository.preload({
       id: classroom.id,
@@ -106,7 +141,29 @@ export class SchoolService {
     })
 
     return await this.classroomRepository.save(clasroomUpdated);
+  }
 
+  async updateMasterPPBySchoolIdAndId(schoolId: number, id: number, requestMasterPoliticalPartyDto: RequestMasterPoliticalPartyDto) {
+    const school = await this.schoolRepository.findOneBy({id:schoolId});
+    
+    if(!school) throw new NotFoundException(`School with id ${schoolId} not found`);
+
+    const masterPP = await this.masterPoliticalPartyRepository.findOneBy({
+      id: id,
+      school:{
+        id:schoolId
+      }
+    })
+
+    if(!masterPP) throw new NotFoundException(`Master-political-party with id ${id} not found`);
+
+    const masterPPUpdated = await this.masterPoliticalPartyRepository.preload({
+      id: masterPP.id,
+      school: masterPP.school,
+      ...requestMasterPoliticalPartyDto
+    })
+
+    return await this.masterPoliticalPartyRepository.save(masterPPUpdated);
   }
 
   async remove(id: number) {
@@ -117,20 +174,37 @@ export class SchoolService {
     await this.schoolRepository.remove(school);
   }
 
-  async deleteClassroomByIdAndSchoolId(id: number, classroomId: number) {
-    const school = await this.schoolRepository.findOneBy({id});
+  async deleteClassroomBySchoolIdAndId(schoolId: number, id: number) {
+    const school = await this.schoolRepository.findOneBy({id:schoolId});
     
-    if(!school) throw new NotFoundException(`School with id ${id} not found`);
+    if(!school) throw new NotFoundException(`School with id ${schoolId} not found`);
 
     const classroom = await this.classroomRepository.findOneBy({
-      id: classroomId,
+      id: id,
       school:{
-        id:id
+        id:schoolId
       }
     })
 
-    if(!classroom) throw new NotFoundException(`Classroom with id ${classroomId} not found`);
+    if(!classroom) throw new NotFoundException(`Classroom with id ${id} not found`);
 
     await this.classroomRepository.remove(classroom);
+  }
+
+  async deleteMasterPPBySchoolIdAndId(schoolId: number, id: number) {
+    const school = await this.schoolRepository.findOneBy({id:schoolId});
+    
+    if(!school) throw new NotFoundException(`School with id ${schoolId} not found`);
+
+    const masterPP = await this.masterPoliticalPartyRepository.findOneBy({
+      id: id,
+      school:{
+        id:schoolId
+      }
+    })
+
+    if(!masterPP) throw new NotFoundException(`Master-political-party with id ${id} not found`)
+
+    await this.masterPoliticalPartyRepository.remove(masterPP);
   }
 }

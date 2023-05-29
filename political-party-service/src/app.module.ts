@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RoleModule } from './role/role.module';
 import { SchoolModule } from './school/school.module';
 import { ClassroomModule } from './classroom/classroom.module';
+import { MasterPoliticalPartyModule } from './master-political-party/master-political-party.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ClassroomModule } from './classroom/classroom.module';
     RoleModule,
     SchoolModule,
     ClassroomModule,
+    MasterPoliticalPartyModule,
   ],
   controllers: [],
   providers: [],
