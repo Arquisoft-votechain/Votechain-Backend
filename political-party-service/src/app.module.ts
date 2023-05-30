@@ -5,6 +5,7 @@ import { RoleModule } from './role/role.module';
 import { SchoolModule } from './school/school.module';
 import { ClassroomModule } from './classroom/classroom.module';
 import { MasterPoliticalPartyModule } from './master-political-party/master-political-party.module';
+import { PoliticalPartyParticipantModule } from './political-party-participant/political-party-participant.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { MasterPoliticalPartyModule } from './master-political-party/master-poli
     SchoolModule,
     ClassroomModule,
     MasterPoliticalPartyModule,
+    PoliticalPartyParticipantModule,
   ],
   controllers: [],
   providers: [],
