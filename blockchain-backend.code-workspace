@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "political-party-service"
+		},
+		{
+			"path": "authenticate-service"
+		}
+	],
+	"settings": {}
+}

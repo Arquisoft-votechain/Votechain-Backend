@@ -1,5 +1,5 @@
 {
-  "name": "political-party-service",
+  "name": "api-gateway-service",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -17,23 +17,21 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "proto:install": "npm i git+https://github.com/CarlosIzarra09/grpc-nest-proto.git",
+    "proto:auth": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto -I=./node_modules/grpc-nest-proto/proto --ts_proto_out=src/auth/ node_modules/grpc-nest-proto/proto/auth.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
+    "proto:all": "npm run proto:auth"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.8.14",
+    "@grpc/proto-loader": "^0.7.7",
     "@nestjs/common": "^9.0.0",
-    "@nestjs/config": "^2.3.2",
     "@nestjs/core": "^9.0.0",
-    "@nestjs/mapped-types": "*",
     "@nestjs/microservices": "^9.4.2",
     "@nestjs/platform-express": "^9.0.0",
-    "@nestjs/swagger": "^6.3.0",
-    "@nestjs/typeorm": "^9.0.1",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.0",
-    "pg": "^8.11.0",
+    "grpc-nest-proto": "github:CarlosIzarra09/grpc-nest-proto",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0",
-    "typeorm": "^0.3.16"
+    "rxjs": "^7.2.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -41,7 +39,7 @@
     "@nestjs/testing": "^9.0.0",
     "@types/express": "^4.17.13",
     "@types/jest": "29.5.1",
-    "@types/node": "18.16.12",
+    "@types/node": "^18.16.12",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
@@ -55,6 +53,7 @@
     "ts-jest": "29.1.0",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
+    "ts-proto": "^1.148.1",
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.0.0"
   },
