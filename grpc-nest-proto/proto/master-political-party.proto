@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package master_political_party;
+
+service MasterPoliticalPartyService {
+    rpc findAll (Empty) returns (MasterPoliticalPartyResponseList) {}
+    rpc findOne (FindOneRequest) returns (MasterPoliticalPartyResponse) {}
+}
+
+
+
+message Empty {}
+
+message FindOneRequest {
+    int32 id = 1;
+  }
+
+message MasterPoliticalPartyRequest{
+ 
+    string name = 1;
+
+    string description = 2;
+
+    repeated string proposes = 3;
+}
+
+message MasterPoliticalPartyResponse {
+    int32 id = 1;
+
+    string name = 2;
+
+    string description = 3;
+
+    repeated string proposes = 4;
+
+    int32 schoolId = 5;
+}
+
+
+message MasterPoliticalPartyResponseList {
+    repeated MasterPoliticalPartyResponse items = 1;
+}
