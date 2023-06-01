@@ -5,84 +5,103 @@ import { ResponseSchoolDto } from './dto/response-school.dto';
 import { RequestClassroomDto } from 'src/classroom/dto/request-classroom.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { RequestMasterPoliticalPartyDto } from 'src/master-political-party/dto/request-master-political-party.dto';
+import { MessagePattern } from '@nestjs/microservices';
+import * as request from 'supertest';
 
 @ApiTags('school')
 @Controller('school')
 export class SchoolController {
-  constructor(private readonly schoolService: SchoolService) {}
+  constructor(private readonly schoolService: SchoolService) { }
 
-  @Post()
-  create(@Body() requestSchoolDto: RequestSchoolDto) {
+  //@Post()
+  @MessagePattern({ cmd: 'createSchool' })
+  createSchool(@Body() requestSchoolDto: RequestSchoolDto): Promise<ResponseSchoolDto> {
     return this.schoolService.create(requestSchoolDto);
   }
 
-  @Post(':id/classrooms')
-  createClassroomBySchoolId(@Param('id',ParseIntPipe) id: number, @Body() requestClassroomDto: RequestClassroomDto){
-    return this.schoolService.createClassroomBySchoolId(id,requestClassroomDto);
+  //@Post(':id/classrooms')
+  @MessagePattern({ cmd: 'createClassroomBySchoolId' })
+  createClassroomBySchoolId(data: { id: number, requestClassroomDto: RequestClassroomDto }): Promise<ResponseSchoolDto> {
+    const { id, requestClassroomDto } = data;
+    return this.schoolService.createClassroomBySchoolId(id, requestClassroomDto);
   }
 
-  @Post(':id/master-political-parties')
-  createMasterPoliticalPartyBySchoolId(@Param('id',ParseIntPipe) id: number, @Body() requestMasterPoliticalPartyDto: RequestMasterPoliticalPartyDto){
-    return this.schoolService.createMasterPoliticalPartyBySchoolId(id,requestMasterPoliticalPartyDto);
+  @MessagePattern({ cmd: 'createMasterPoliticalPartyBySchoolId' })
+  createMasterPoliticalPartyBySchoolId(data: { id: number, requestMasterPoliticalPartyDto: RequestMasterPoliticalPartyDto }) {
+    const { id, requestMasterPoliticalPartyDto } = data;
+    return this.schoolService.createMasterPoliticalPartyBySchoolId(id, requestMasterPoliticalPartyDto);
   }
-  
-  
 
-  @Get()
-  findAll() {
+
+  @MessagePattern({ cmd: 'findAllSchools' })
+  findAllSchools() {
     return this.schoolService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id',ParseIntPipe) id: number) {
+  @MessagePattern({ cmd: 'findOneSchool' })
+  findOneSchool(id: number) {
     return this.schoolService.findOne(id);
   }
 
-  @Get(':id/classrooms')
-  findAllClassroomsBySchoolId(@Param('id',ParseIntPipe) id: number){
+  @MessagePattern({ cmd: 'findAllClassroomsBySchoolId' })
+  findAllClassroomsBySchoolId(id: number) {
     return this.schoolService.findAllClassroomsBySchoolId(id);
   }
 
-  @Get(':id/master-political-parties')
-  findAllMasterPoliticalPartiesBySchoolId(@Param('id',ParseIntPipe) id: number){
+  @MessagePattern({ cmd: 'findAllMasterPoliticalPartiesBySchoolId' })
+  findAllMasterPoliticalPartiesBySchoolId(id: number) {
     return this.schoolService.findAllMasterPoliticalPartiesBySchoolId(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: number, @Body() requestSchoolDto: RequestSchoolDto) {
+  @MessagePattern({ cmd: 'updateSchool' })
+  update(data: { id: number, requestSchoolDto: RequestSchoolDto }) {
+    const { id, requestSchoolDto } = data;
     return this.schoolService.update(id, requestSchoolDto);
   }
 
-  @Patch(':schoolId/classrooms/:id')
-  updateClassroomBySchoolIdAndId(@Param('schoolId',ParseIntPipe) schoolId: number, 
-    @Param('id',ParseIntPipe) id: number,
-    @Body() requestClassroomDto: RequestClassroomDto) {
-    return this.schoolService.updateClassroomBySchoolIdAndId(schoolId, id,requestClassroomDto);
+  //@Patch(':schoolId/classrooms/:id')
+  @MessagePattern({ cmd: 'updateClassroomBySchoolIdAndId' })
+  updateClassroomBySchoolIdAndId(data: {
+    schoolId: number,
+    id: number,
+    requestClassroomDto: RequestClassroomDto
+  }) {
+    const { schoolId, id, requestClassroomDto } = data;
+    return this.schoolService.updateClassroomBySchoolIdAndId(schoolId, id, requestClassroomDto);
   }
 
-  @Patch(':schoolId/master-political-parties/:id')
-  updateMasterPPBySchoolIdAndId(@Param('schoolId',ParseIntPipe) schoolId: number, 
-    @Param('id',ParseIntPipe) id: number,
-    @Body() requestMasterPoliticalPartyDto: RequestMasterPoliticalPartyDto) {
-    return this.schoolService.updateMasterPPBySchoolIdAndId(schoolId, id,requestMasterPoliticalPartyDto);
+
+  @MessagePattern({ cmd: 'updateMasterPPBySchoolIdAndId' })
+  updateMasterPPBySchoolIdAndId(data: {
+    schoolId: number,
+    id: number,
+    requestMasterPoliticalPartyDto: RequestMasterPoliticalPartyDto
+  }) {
+    const { schoolId, id, requestMasterPoliticalPartyDto } = data;
+    return this.schoolService.updateMasterPPBySchoolIdAndId(schoolId, id, requestMasterPoliticalPartyDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id',ParseIntPipe) id: number) {
+  @MessagePattern({ cmd: 'removeSchool' })
+  remove(id: number) {
     return this.schoolService.remove(id);
   }
 
-  @Delete(':schoolId/classrooms/:id')
-  deleteClassroomByIdAndSchoolId(
-    @Param('schoolId',ParseIntPipe) schoolId: number, 
-    @Param('id',ParseIntPipe) id: number) {
+  @MessagePattern({ cmd: 'deleteClassroomBySchoolIdAndId' })
+  deleteClassroomByIdAndSchoolId(data: {
+    schoolId: number,
+    id: number
+  }) {
+    const { schoolId, id } = data;
     return this.schoolService.deleteClassroomBySchoolIdAndId(schoolId, id);
   }
 
-  @Delete(':schoolId/master-political-parties/:id')
+  @MessagePattern({ cmd: 'deleteMasterPPBySchoolIdAndId' })
   deleteMasterPPBySchoolIdAndId(
-    @Param('schoolId',ParseIntPipe) schoolId: number, 
-    @Param('id',ParseIntPipe) id: number) {
+    data: {
+      schoolId: number,
+      id: number
+    }) {
+    const { schoolId, id } = data;
     return this.schoolService.deleteMasterPPBySchoolIdAndId(schoolId, id);
   }
 }

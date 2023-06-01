@@ -28,7 +28,7 @@ export class MasterPoliticalPartyService {
     return masterPP;
   }
 
-  async createPoliticalPartyParticipantByMasterId(id: number, electoral_process_id: number, politicalPartyParticipant: RequestPoliticalPartyParticipantDto) {
+  async createPoliticalPartyParticipantByMasterIdAndEpId(id: number, electoral_process_id: number, politicalPartyParticipant: RequestPoliticalPartyParticipantDto) {
 
     const masterPP = await this.masterPoliticalPartyRepository.findOneBy({ id });
     if (!masterPP) throw new NotFoundException(`Master-political-party with id ${id} not found`)

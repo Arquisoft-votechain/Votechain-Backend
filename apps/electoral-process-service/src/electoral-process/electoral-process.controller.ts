@@ -2,17 +2,24 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ElectoralProcessService } from './electoral-process.service';
 import { RequestElectoralProcessDto } from './dto/request-electoral-process.dto';
 import { ResponseElectoralProcessDto } from './dto/response-electoral-process.dto';
+import { MessagePattern } from '@nestjs/microservices';
 
 @Controller('electoral-process')
 export class ElectoralProcessController {
   constructor(private readonly electoralProcessService: ElectoralProcessService) {}
 
-  @Post()
-  create(@Body() createElectoralProcessDto: RequestElectoralProcessDto) {
-    return this.electoralProcessService.create(createElectoralProcessDto);
+  /*@Post()
+  create(@Body() requestElectoralProcessDto: RequestElectoralProcessDto) {
+    return this.electoralProcessService.create(requestElectoralProcessDto);
+  }*/
+
+  @MessagePattern({ cmd: 'createBySchoolId' })
+  createBySchoolId(data: {schoolId: number, requestElectoralProcessDto: RequestElectoralProcessDto}){
+    const {schoolId, requestElectoralProcessDto} = data;
+    return this.electoralProcessService.createBySchoolId(schoolId, requestElectoralProcessDto);
   }
 
-  @Get()
+  /*@Get()
   findAll() {
     return this.electoralProcessService.findAll();
   }
@@ -30,5 +37,5 @@ export class ElectoralProcessController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.electoralProcessService.remove(+id);
-  }
+  }*/
 }

@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ApiGatewayModule } from './api-gateway/api-gateway.module';
+import { PoliticalPartyModule } from './api-gateway/political-party/political-party.module';
 
 
 
 @Module({
   imports: [
-    
+    ApiGatewayModule,
+    PoliticalPartyModule 
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

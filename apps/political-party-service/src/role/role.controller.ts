@@ -3,34 +3,36 @@ import { RoleService } from './role.service';
 import { RequestRoleDto } from './dto/request-role.dto';
 import { ResponseRoleDto } from './dto/response-role.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { MessagePattern } from '@nestjs/microservices';
 
 @ApiTags('role')
 @Controller('role')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}
 
-  @Post()
-  create(@Body() requestRoleDto: RequestRoleDto) {
+  @MessagePattern({ cmd: 'createRole' })
+  createRole(requestRoleDto: RequestRoleDto) {
     return this.roleService.create(requestRoleDto);
   }
 
-  @Get()
-  findAll() {
+  @MessagePattern({ cmd: 'findAllRoles' })
+  findAllRoles() {
     return this.roleService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  @MessagePattern({ cmd: 'findOneRole' })
+  findOneRole(id: number) {
     return this.roleService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() requestRoleDto: RequestRoleDto) {
-    return this.roleService.update(+id, requestRoleDto);
+  @MessagePattern({ cmd: 'updateRole' })
+  updateRole(data: { id: number, requestRoleDto: RequestRoleDto}) {
+    const {id , requestRoleDto} = data;
+    return this.roleService.update(id, requestRoleDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  @MessagePattern({ cmd: 'removeRole' })
+  removeRole(id: number) {
     return this.roleService.remove(id);
   }
 }

@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+
 @Entity()
 export class ElectoralProcess {
 
@@ -18,4 +19,10 @@ export class ElectoralProcess {
 
     @Column('int')
     status: number;
+
+    @Column('int',{
+        name: 'school_id',
+        nullable: false
+    })
+    schoolId: number;
 }

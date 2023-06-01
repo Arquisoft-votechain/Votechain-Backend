@@ -2,18 +2,20 @@ import { Body, Controller, Post, Query, UsePipes, ValidationPipe } from '@nestjs
 import { EmailService } from './email.service';
 import { EmailRequest } from './dto/emaiRequest.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { MessagePattern } from '@nestjs/microservices';
 
 
-@ApiTags('email')
-@Controller('api/email')
+//@ApiTags('email')
+@Controller('email')
 export class EmailController {
 
     constructor(
         private readonly emailService: EmailService
     ){}
 
-    @Post('send')
-    @UsePipes(new ValidationPipe())
+    //@Post('send')
+    @MessagePattern({ cmd: 'send' })
+    @UsePipes(new ValidationPipe({ transform: true }))
     async sendEmail(@Body() email:EmailRequest) {
         //console.log(email);
 

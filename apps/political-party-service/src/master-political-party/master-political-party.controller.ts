@@ -5,6 +5,7 @@ import { ResponseMasterPoliticalPartyDto } from './dto/response-master-political
 import { ApiTags } from '@nestjs/swagger';
 import { PoliticalPartyParticipant } from 'src/political-party-participant/entities/political-party-participant.entity';
 import { RequestPoliticalPartyParticipantDto } from 'src/political-party-participant/dto/request-political-party-participant.dto';
+import { MessagePattern } from '@nestjs/microservices';
 
 @ApiTags('master-political-party')
 @Controller('master-political-party')
@@ -12,13 +13,13 @@ export class MasterPoliticalPartyController {
   constructor(private readonly masterPoliticalPartyService: MasterPoliticalPartyService) { }
 
 
-  @Get()
+  @MessagePattern({ cmd: 'findAllMasterPPs' })
   findAll() {
     return this.masterPoliticalPartyService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  @MessagePattern({ cmd: 'findOneMasterPP' })
+  findOne(id: number) {
     return this.masterPoliticalPartyService.findOne(id);
   }
 
@@ -27,7 +28,7 @@ export class MasterPoliticalPartyController {
     @Query('electoral_process_id', ParseIntPipe) electoral_process_id: number,
     @Body() politicalPartyParticipant: RequestPoliticalPartyParticipantDto
   ) {
-    return this.masterPoliticalPartyService.createPoliticalPartyParticipantByMasterId(id, electoral_process_id,politicalPartyParticipant);
+    return this.masterPoliticalPartyService.createPoliticalPartyParticipantByMasterIdAndEpId(id, electoral_process_id,politicalPartyParticipant);
   }
 
   @Delete(':master_political_partyId/political-party-participants/:id')

@@ -7,24 +7,22 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   //const app = await NestFactory.create(AppModule);
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    AppModule,
-    {
-      transport: Transport.TCP,
-      options:{
-        host: '0.0.0.0',
-        port: 8080
-      }
+  const app = await NestFactory.create(AppModule);
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.TCP,
+    options:{
+      host: '127.0.0.1',
+      port: 4201
     }
-    );
+  })
+
+  await app.startAllMicroservices()
+  await app.listen(4201);
+  console.log(`App is running on port ${await app.getUrl()}`)
 
   //app.setGlobalPrefix('api');
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true
-    })
-  )
+  
 
    // Configurar Swagger
   /*const config = new DocumentBuilder()
@@ -36,6 +34,5 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);*/
 
   //await app.listen(3000);
-  await app.listen();
 }
 bootstrap();
