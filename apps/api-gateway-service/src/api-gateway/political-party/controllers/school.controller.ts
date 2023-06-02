@@ -100,8 +100,39 @@ export class SchoolController {
     createBySchoolId(
         @Param('schoolId', ParseIntPipe) schoolId: number,
         @Body() requestElectoralProcessDto: RequestElectoralProcessDto) {
-        return this.clientElectoralProcessService.send({ cmd: 'createBySchoolId' }, { schoolId, requestElectoralProcessDto });
+        return this.clientElectoralProcessService.send({ cmd: 'createElectoralProcessBySchoolId' }, { schoolId, requestElectoralProcessDto });
 
+    }
+
+    @Get(':schoolId/electoral-processes')
+    findAllElectoralProcessesBySchoolId(
+        @Param('schoolId', ParseIntPipe) schoolId: number) {
+        return this.clientElectoralProcessService.send({ cmd: 'findAllElectoralProcessesBySchoolId' }, schoolId );
+    }
+
+    @Get(':schoolId/electoral-processes/:id')
+    findOneElectoralProcessBySchoolIdAndId(
+        @Param('schoolId', ParseIntPipe) schoolId: number,
+        @Param('id', ParseIntPipe) id: number,
+        ) {
+        return this.clientElectoralProcessService.send({ cmd: 'findOneElectoralProcessBySchoolIdAndId' }, { schoolId, id });
+    }
+
+    @Patch(':schoolId/electoral-processes/:id')
+    updateElectoralProcessBySchoolIdAndId(
+        @Param('schoolId', ParseIntPipe) schoolId: number,
+        @Param('id', ParseIntPipe) id: number,
+        @Body() requestElectoralProcessDto: RequestElectoralProcessDto
+        ) {
+        return this.clientElectoralProcessService.send({ cmd: 'updateElectoralProcessBySchoolIdAndId' }, { schoolId, id, requestElectoralProcessDto });
+    }
+
+    @Delete(':schoolId/electoral-processes/:id')
+    removeElectoralProcessBySchoolIdAndId(
+        @Param('schoolId', ParseIntPipe) schoolId: number,
+        @Param('id', ParseIntPipe) id: number,
+        ) {
+        return this.clientElectoralProcessService.send({ cmd: 'removeElectoralProcessBySchoolIdAndId' }, { schoolId, id });
     }
 
 }
