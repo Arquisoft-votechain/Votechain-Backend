@@ -4,6 +4,7 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { Repository } from 'typeorm';
 import { Student } from './entities/student.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { StudentResponse } from './dto/student.response';
 
 
 
@@ -28,24 +29,36 @@ export class StudentService {
     return this.studentRepository.find();
   }
 
-  async findOne(id: any): Promise<Student>{
-    const studentExist =  await this.studentRepository.findOne({where: {id}});
+  async findOne(id: any){
+    try{
+      const studentExist =  await this.studentRepository.findOne({where: {id}});
 
-    if (!studentExist) throw new NotFoundException(`Student with id ${id} is not registered`);
-    return studentExist;
+      if (!studentExist) {
+      return new StudentResponse(`Student with id ${id} is not registered`);
+      }
+      return new StudentResponse('',studentExist);
+    }catch(error){
+      return new StudentResponse(`An error ocurred when finding ` + error.message);
+    }
     //return `This action returns a #${id} student`;
   }
 
-  async findByDNI(dniStudent: any): Promise<Student>{
-    const StudentExist =  await this.studentRepository.findOne(
+  async findByDNI(dniStudent: any){
+    try{
+      const studentExist =  await this.studentRepository.findOne(
       {
         where: {
           dni: dniStudent,
         }
       });
 
-    if (!StudentExist) throw new NotFoundException(`Student with dni ${dniStudent} is not registered`);
-    return StudentExist;
+      if (!studentExist) {
+        return new StudentResponse(`Student with dni ${dniStudent} is not registered`);
+        }
+    return new StudentResponse('',studentExist);
+    }catch(error){
+      return new StudentResponse(`An error ocurred when finding ` + error.message);
+    }
   }
 
   async update(id: any, updateStudentDto: Partial<UpdateStudentDto>) {
