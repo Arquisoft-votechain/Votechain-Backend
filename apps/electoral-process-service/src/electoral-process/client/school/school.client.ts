@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
-import { SchoolDto } from './school.dto';
+import { SchoolDto } from '../communication/school.reponse';
 import { lastValueFrom, map } from 'rxjs';
 
 @Injectable()
@@ -21,6 +21,6 @@ export class PoliticalPartyClient {
         map(response => response as SchoolDto)
       ));
     
-    return response;
+      return response;
   }
 }

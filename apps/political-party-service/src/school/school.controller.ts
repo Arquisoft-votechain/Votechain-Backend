@@ -7,101 +7,104 @@ import { ApiTags } from '@nestjs/swagger';
 import { RequestMasterPoliticalPartyDto } from 'src/master-political-party/dto/request-master-political-party.dto';
 import { MessagePattern } from '@nestjs/microservices';
 import * as request from 'supertest';
+import { SchoolResponse } from './dto/school.reponse';
+import { ClassroomResponse } from 'src/classroom/dto/classroom.response';
+import { MasterPoliticalPartyResponse } from 'src/master-political-party/dto/master-political-party.response';
 
-@ApiTags('school')
-@Controller('school')
+
+@Controller('schools')
 export class SchoolController {
   constructor(private readonly schoolService: SchoolService) { }
 
   //@Post()
   @MessagePattern({ cmd: 'createSchool' })
-  createSchool(@Body() requestSchoolDto: RequestSchoolDto): Promise<ResponseSchoolDto> {
-    return this.schoolService.create(requestSchoolDto);
+  async createSchool(@Body() requestSchoolDto: RequestSchoolDto): Promise<SchoolResponse> {
+    return await this.schoolService.createSchool(requestSchoolDto);
   }
 
   //@Post(':id/classrooms')
   @MessagePattern({ cmd: 'createClassroomBySchoolId' })
-  createClassroomBySchoolId(data: { id: number, requestClassroomDto: RequestClassroomDto }): Promise<ResponseSchoolDto> {
+  async createClassroomBySchoolId(data: { id: number, requestClassroomDto: RequestClassroomDto }): Promise<ClassroomResponse> {
     const { id, requestClassroomDto } = data;
-    return this.schoolService.createClassroomBySchoolId(id, requestClassroomDto);
+    return await this.schoolService.createClassroomBySchoolId(id, requestClassroomDto);
   }
 
   @MessagePattern({ cmd: 'createMasterPoliticalPartyBySchoolId' })
-  createMasterPoliticalPartyBySchoolId(data: { id: number, requestMasterPoliticalPartyDto: RequestMasterPoliticalPartyDto }) {
+  async createMasterPoliticalPartyBySchoolId(data: { id: number, requestMasterPoliticalPartyDto: RequestMasterPoliticalPartyDto }): Promise<MasterPoliticalPartyResponse> {
     const { id, requestMasterPoliticalPartyDto } = data;
-    return this.schoolService.createMasterPoliticalPartyBySchoolId(id, requestMasterPoliticalPartyDto);
+    return await this.schoolService.createMasterPoliticalPartyBySchoolId(id, requestMasterPoliticalPartyDto);
   }
 
 
   @MessagePattern({ cmd: 'findAllSchools' })
-  findAllSchools() {
-    return this.schoolService.findAll();
+  async findAllSchools() {
+    return await this.schoolService.findAllSchools();
   }
 
   @MessagePattern({ cmd: 'findOneSchool' })
-  findOneSchool(id: number) {
-    return this.schoolService.findOne(id);
+  async findOneSchool(id: number): Promise<SchoolResponse> {
+    return await this.schoolService.findOneSchoolById(id);
   }
 
   @MessagePattern({ cmd: 'findAllClassroomsBySchoolId' })
-  findAllClassroomsBySchoolId(id: number) {
-    return this.schoolService.findAllClassroomsBySchoolId(id);
+  async findAllClassroomsBySchoolId(id: number) {
+    return await this.schoolService.findAllClassroomsBySchoolId(id);
   }
 
   @MessagePattern({ cmd: 'findAllMasterPoliticalPartiesBySchoolId' })
-  findAllMasterPoliticalPartiesBySchoolId(id: number) {
-    return this.schoolService.findAllMasterPoliticalPartiesBySchoolId(id);
+  async findAllMasterPoliticalPartiesBySchoolId(id: number) {
+    return await this.schoolService.findAllMasterPoliticalPartiesBySchoolId(id);
   }
 
   @MessagePattern({ cmd: 'updateSchool' })
-  update(data: { id: number, requestSchoolDto: RequestSchoolDto }) {
+  async update(data: { id: number, requestSchoolDto: RequestSchoolDto }): Promise<SchoolResponse> {
     const { id, requestSchoolDto } = data;
-    return this.schoolService.update(id, requestSchoolDto);
+    return await this.schoolService.updateSchoolById(id, requestSchoolDto);
   }
 
   //@Patch(':schoolId/classrooms/:id')
   @MessagePattern({ cmd: 'updateClassroomBySchoolIdAndId' })
-  updateClassroomBySchoolIdAndId(data: {
+  async updateClassroomBySchoolIdAndId(data: {
     schoolId: number,
     id: number,
     requestClassroomDto: RequestClassroomDto
-  }) {
+  }): Promise<ClassroomResponse> {
     const { schoolId, id, requestClassroomDto } = data;
-    return this.schoolService.updateClassroomBySchoolIdAndId(schoolId, id, requestClassroomDto);
+    return await this.schoolService.updateClassroomBySchoolIdAndId(schoolId, id, requestClassroomDto);
   }
 
 
   @MessagePattern({ cmd: 'updateMasterPPBySchoolIdAndId' })
-  updateMasterPPBySchoolIdAndId(data: {
+  async updateMasterPPBySchoolIdAndId(data: {
     schoolId: number,
     id: number,
     requestMasterPoliticalPartyDto: RequestMasterPoliticalPartyDto
-  }) {
+  }): Promise<MasterPoliticalPartyResponse> {
     const { schoolId, id, requestMasterPoliticalPartyDto } = data;
-    return this.schoolService.updateMasterPPBySchoolIdAndId(schoolId, id, requestMasterPoliticalPartyDto);
+    return await this.schoolService.updateMasterPPBySchoolIdAndId(schoolId, id, requestMasterPoliticalPartyDto);
   }
 
   @MessagePattern({ cmd: 'removeSchool' })
-  remove(id: number) {
-    return this.schoolService.remove(id);
+  async remove(id: number): Promise<SchoolResponse> {
+    return await this.schoolService.removeSchoolById(id);
   }
 
   @MessagePattern({ cmd: 'deleteClassroomBySchoolIdAndId' })
-  deleteClassroomByIdAndSchoolId(data: {
+  async deleteClassroomByIdAndSchoolId(data: {
     schoolId: number,
     id: number
-  }) {
+  }): Promise<ClassroomResponse> {
     const { schoolId, id } = data;
-    return this.schoolService.deleteClassroomBySchoolIdAndId(schoolId, id);
+    return await this.schoolService.deleteClassroomBySchoolIdAndId(schoolId, id);
   }
 
   @MessagePattern({ cmd: 'deleteMasterPPBySchoolIdAndId' })
-  deleteMasterPPBySchoolIdAndId(
+  async deleteMasterPPBySchoolIdAndId(
     data: {
       schoolId: number,
       id: number
-    }) {
+    }): Promise<MasterPoliticalPartyResponse> {
     const { schoolId, id } = data;
-    return this.schoolService.deleteMasterPPBySchoolIdAndId(schoolId, id);
+    return await this.schoolService.deleteMasterPPBySchoolIdAndId(schoolId, id);
   }
 }
