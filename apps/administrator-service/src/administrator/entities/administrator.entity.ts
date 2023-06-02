@@ -30,7 +30,7 @@ export class Administrator{
 
     @Column('int',{
         name: 'user_id',
-        nullable: false
+        nullable: true
     })
     userId: number;
 }

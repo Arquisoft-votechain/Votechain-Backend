@@ -30,7 +30,7 @@ export class Student {
 
     @Column('int',{
         name: 'user_id',
-        nullable: false
+        nullable: true
     })
     userId: number;
 
@@ -42,7 +42,7 @@ export class Student {
 
     @Column('int',{
         name: 'classroom_id',
-        nullable: false
+        nullable: true
     })
     classroomId: number;
 
