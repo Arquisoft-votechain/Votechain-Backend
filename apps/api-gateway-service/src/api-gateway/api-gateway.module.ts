@@ -5,6 +5,7 @@ import { ElectoralProcessModule } from './electoral-process/electoral-process.mo
 import { StudentModule } from './student/student.module';
 import { AdministratorModule } from './administrator/administrator.module';
 import { UserModule } from './user/user.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [AuthenticateModule, PoliticalPartyModule, ElectoralProcessModule, StudentModule, AdministratorModule, UserModule],

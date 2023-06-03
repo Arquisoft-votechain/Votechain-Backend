@@ -8,13 +8,13 @@ async function bootstrap() {
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options:{
-      host: '127.0.0.1',
-      port: 4202
+      host: process.env.HOSTNAME,
+      port: +process.env.PORT
     }
   })
 
   await app.startAllMicroservices()
-  await app.listen(4202);
+  await app.listen(+process.env.PORT);
   console.log(`App is running on port ${await app.getUrl()}`)
 }
 bootstrap();

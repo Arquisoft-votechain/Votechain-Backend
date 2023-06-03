@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ApiGatewayModule } from './api-gateway/api-gateway.module';
-import { PoliticalPartyModule } from './api-gateway/political-party/political-party.module';
+import { ConfigModule } from '@nestjs/config';
 
 
 
 @Module({
   imports: [
-    ApiGatewayModule,
-    PoliticalPartyModule 
+    ConfigModule.forRoot(),
+    ApiGatewayModule
   ],
   controllers: [],
   providers: [],

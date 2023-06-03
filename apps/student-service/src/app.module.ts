@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { StudentModule } from './student/student.module';
 import { VoteModule } from './vote/vote.module';
 import { ConfigModule } from '@nestjs/config';
@@ -20,7 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true
     }),
     StudentModule, VoteModule],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
