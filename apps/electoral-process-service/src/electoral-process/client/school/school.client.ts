@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
-import { SchoolDto } from './school.dto';
+import { SchoolDto, SchoolReponse } from '../communication/school.reponse';
 import { lastValueFrom, map } from 'rxjs';
 
 @Injectable()
@@ -15,12 +15,12 @@ export class PoliticalPartyClient {
   })
   private readonly clientProxy: ClientProxy;
 
-  async getSchoolById(id: number) {
+  async getSchoolById(id: number): Promise<SchoolReponse> {
     const response = await lastValueFrom(this.clientProxy.send({ cmd: 'findOneSchool' }, id)
       .pipe(
-        map(response => response as SchoolDto)
+        map(response => response as SchoolReponse)
       ));
     
-    return response;
+      return response;
   }
 }

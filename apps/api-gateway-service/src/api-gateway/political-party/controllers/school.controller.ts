@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Post, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, NotFoundException, Param, ParseIntPipe, Patch, Post, UseFilters } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/util/http-exception.filter';
@@ -6,10 +6,11 @@ import { RequestSchoolDto } from '../models/school.dto';
 import { RequestClassroomDto } from '../models/classroom.dto';
 import { RequestMasterPoliticalPartyDto } from '../models/master-political-party.dto';
 import { RequestElectoralProcessDto } from '../models/electoral-process.dto';
+import { catchError } from 'rxjs';
+import { error } from 'console';
 
 @ApiTags('schools')
 @Controller('schools')
-@UseFilters(new HttpExceptionFilter())
 export class SchoolController {
     constructor(
         @Inject('POLITICAL_PARTY_SERVICE') private clientPoliticalPartyService: ClientProxy,
@@ -99,8 +100,39 @@ export class SchoolController {
     createBySchoolId(
         @Param('schoolId', ParseIntPipe) schoolId: number,
         @Body() requestElectoralProcessDto: RequestElectoralProcessDto) {
-        return this.clientElectoralProcessService.send({ cmd: 'createBySchoolId' }, { schoolId, requestElectoralProcessDto });
+        return this.clientElectoralProcessService.send({ cmd: 'createElectoralProcessBySchoolId' }, { schoolId, requestElectoralProcessDto });
 
+    }
+
+    @Get(':schoolId/electoral-processes')
+    findAllElectoralProcessesBySchoolId(
+        @Param('schoolId', ParseIntPipe) schoolId: number) {
+        return this.clientElectoralProcessService.send({ cmd: 'findAllElectoralProcessesBySchoolId' }, schoolId );
+    }
+
+    @Get(':schoolId/electoral-processes/:id')
+    findOneElectoralProcessBySchoolIdAndId(
+        @Param('schoolId', ParseIntPipe) schoolId: number,
+        @Param('id', ParseIntPipe) id: number,
+        ) {
+        return this.clientElectoralProcessService.send({ cmd: 'findOneElectoralProcessBySchoolIdAndId' }, { schoolId, id });
+    }
+
+    @Patch(':schoolId/electoral-processes/:id')
+    updateElectoralProcessBySchoolIdAndId(
+        @Param('schoolId', ParseIntPipe) schoolId: number,
+        @Param('id', ParseIntPipe) id: number,
+        @Body() requestElectoralProcessDto: RequestElectoralProcessDto
+        ) {
+        return this.clientElectoralProcessService.send({ cmd: 'updateElectoralProcessBySchoolIdAndId' }, { schoolId, id, requestElectoralProcessDto });
+    }
+
+    @Delete(':schoolId/electoral-processes/:id')
+    removeElectoralProcessBySchoolIdAndId(
+        @Param('schoolId', ParseIntPipe) schoolId: number,
+        @Param('id', ParseIntPipe) id: number,
+        ) {
+        return this.clientElectoralProcessService.send({ cmd: 'removeElectoralProcessBySchoolIdAndId' }, { schoolId, id });
     }
 
 }

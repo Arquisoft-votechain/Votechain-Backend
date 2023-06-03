@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ElectoralProcess } from './entities/electoral-process.entity';
 import { Repository } from 'typeorm';
 import { PoliticalPartyClient } from './client/school/school.client';
+import { ElectoralProcessResponse } from './dto/electoral-process.response';
 
 @Injectable()
 export class ElectoralProcessService {
@@ -14,39 +15,99 @@ export class ElectoralProcessService {
     private readonly politicalPartyClient: PoliticalPartyClient
   ) { }
 
-  async createBySchoolId(schoolId: number, requestElectoralProcessDto: RequestElectoralProcessDto) {
-    const school = await this.politicalPartyClient.getSchoolById(schoolId);
-    
-    console.log(school);
+  async createBySchoolId(schoolId: number, requestElectoralProcessDto: RequestElectoralProcessDto): Promise<ElectoralProcessResponse> {
 
-    requestElectoralProcessDto.end_date = new Date(requestElectoralProcessDto.end_date);
-    requestElectoralProcessDto.start_date = new Date(requestElectoralProcessDto.start_date);
-    console.log(requestElectoralProcessDto);
-    
-    const electoralProcess = this.electoralProcessRepository.create(requestElectoralProcessDto);
-    
-    electoralProcess.schoolId = school.id;
-    
-    return await this.electoralProcessRepository.save(electoralProcess);
+    try {
+      const schoolResponse = await this.politicalPartyClient.getSchoolById(schoolId);
+
+      if (schoolResponse.success == false) {
+        return new ElectoralProcessResponse(schoolResponse.message);
+      }
+
+      requestElectoralProcessDto.end_date = new Date(requestElectoralProcessDto.end_date);
+      requestElectoralProcessDto.start_date = new Date(requestElectoralProcessDto.start_date);
+
+      const electoralProcessPreload = this.electoralProcessRepository.create(requestElectoralProcessDto);
+
+      electoralProcessPreload.schoolId = schoolResponse.resource.id;
+
+      const electoralProcess = await this.electoralProcessRepository.save(electoralProcessPreload);
+
+      return new ElectoralProcessResponse('', electoralProcess);
+
+    } catch (error) {
+      return new ElectoralProcessResponse('An error occurred while creating Electoral Process: ' + error);
+    }
+
   }
 
-  create(createElectoralProcessDto: RequestElectoralProcessDto) {
-    return 'This action adds a new electoralProcess';
+  async findAllElectoralProcessesBySchoolId(schoolId: number) {
+    return this.electoralProcessRepository.find({ where: { schoolId: schoolId } })
   }
 
-  findAll() {
-    return `This action returns all electoralProcess`;
+  async findOneBySchoolIdAndId(schoolId: number, id: number): Promise<ElectoralProcessResponse> {
+    try {
+
+      const schoolResponse = await this.politicalPartyClient.getSchoolById(schoolId);
+
+      if (schoolResponse.success == false) {
+        return new ElectoralProcessResponse(schoolResponse.message);
+      }
+
+      const electoralProcess = await this.electoralProcessRepository.findOneBy({ schoolId: schoolId, id: id });
+      if (!electoralProcess) return new ElectoralProcessResponse(`An electoral process was not found by schoolId ${schoolId} and Id ${id}]`);
+
+      return new ElectoralProcessResponse('', electoralProcess);
+
+    } catch (error) {
+      return new ElectoralProcessResponse('An error occurred while finding Electoral Process: ' + error);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} electoralProcess`;
+  async updateBySchoolIdAndId(schoolId: number, id: number, requestElectoralProcessDto: ResponseElectoralProcessDto): Promise<ElectoralProcessResponse> {
+    try {
+      const schoolResponse = await this.politicalPartyClient.getSchoolById(schoolId);
+
+      if (schoolResponse.success == false) {
+        return new ElectoralProcessResponse(schoolResponse.message);
+      }
+
+      const electoralProcess = await this.electoralProcessRepository.findOneBy({ schoolId: schoolId, id: id });
+      if (!electoralProcess) return new ElectoralProcessResponse(`An electoral process was not found by schoolId ${schoolId} and Id ${id}]`);
+
+      const electoralProcessPreload = await this.electoralProcessRepository.preload({
+        id: electoralProcess.id,
+        schoolId: schoolId,
+        ...requestElectoralProcessDto
+      })
+
+      const updatedElectoralProcess = await this.electoralProcessRepository.save(electoralProcessPreload);
+
+      return new ElectoralProcessResponse('', updatedElectoralProcess);
+
+    } catch (error) {
+      return new ElectoralProcessResponse('An error occurred while updating Electoral Process: ' + error);
+    }
   }
 
-  update(id: number, updateElectoralProcessDto: ResponseElectoralProcessDto) {
-    return `This action updates a #${id} electoralProcess`;
+  async removeBySchoolIdAndId(schoolId: number, id: number): Promise<ElectoralProcessResponse> {
+    try {
+      const schoolResponse = await this.politicalPartyClient.getSchoolById(schoolId);
+
+      if (schoolResponse.success == false) {
+        return new ElectoralProcessResponse(schoolResponse.message);
+      }
+
+      const electoralProcess = await this.electoralProcessRepository.findOneBy({ schoolId: schoolId, id: id });
+      if (!electoralProcess) return new ElectoralProcessResponse(`An electoral process was not found by schoolId ${schoolId} and Id ${id}]`);
+
+      const epdeleted = await this.electoralProcessRepository.remove(electoralProcess);
+
+      return new ElectoralProcessResponse('', epdeleted);
+
+    } catch (error) {
+      return new ElectoralProcessResponse('An error occurred while removing Electoral Process: ' + error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} electoralProcess`;
-  }
 }

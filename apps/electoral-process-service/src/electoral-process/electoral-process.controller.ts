@@ -3,39 +3,39 @@ import { ElectoralProcessService } from './electoral-process.service';
 import { RequestElectoralProcessDto } from './dto/request-electoral-process.dto';
 import { ResponseElectoralProcessDto } from './dto/response-electoral-process.dto';
 import { MessagePattern } from '@nestjs/microservices';
+import { ElectoralProcessResponse } from './dto/electoral-process.response';
 
 @Controller('electoral-process')
 export class ElectoralProcessController {
-  constructor(private readonly electoralProcessService: ElectoralProcessService) {}
+  constructor(private readonly electoralProcessService: ElectoralProcessService) { }
 
-  /*@Post()
-  create(@Body() requestElectoralProcessDto: RequestElectoralProcessDto) {
-    return this.electoralProcessService.create(requestElectoralProcessDto);
-  }*/
-
-  @MessagePattern({ cmd: 'createBySchoolId' })
-  createBySchoolId(data: {schoolId: number, requestElectoralProcessDto: RequestElectoralProcessDto}){
-    const {schoolId, requestElectoralProcessDto} = data;
-    return this.electoralProcessService.createBySchoolId(schoolId, requestElectoralProcessDto);
+  @MessagePattern({ cmd: 'createElectoralProcessBySchoolId' })
+  async createBySchoolId(data: { schoolId: number, requestElectoralProcessDto: RequestElectoralProcessDto }) {
+    const { schoolId, requestElectoralProcessDto } = data;
+    return await this.electoralProcessService.createBySchoolId(schoolId, requestElectoralProcessDto);
   }
 
-  /*@Get()
-  findAll() {
-    return this.electoralProcessService.findAll();
+  @MessagePattern({ cmd: 'findAllElectoralProcessesBySchoolId' })
+  async findAllElectoralProcessesBySchoolId(schoolId: number) {
+    return await this.electoralProcessService.findAllElectoralProcessesBySchoolId(schoolId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.electoralProcessService.findOne(+id);
+  @MessagePattern({ cmd: 'findOneElectoralProcessBySchoolIdAndId' })
+  async findOneBySchoolIdAndId(data: { schoolId: number, id: number }): Promise<ElectoralProcessResponse> {
+    const { schoolId, id } = data;
+    return await this.electoralProcessService.findOneBySchoolIdAndId(schoolId, id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateElectoralProcessDto: ResponseElectoralProcessDto) {
-    return this.electoralProcessService.update(+id, updateElectoralProcessDto);
+  @MessagePattern({ cmd: 'updateElectoralProcessBySchoolIdAndId' })
+  async updateBySchoolIdAndId(data: { schoolId: number, id: number, requestElectoralProcessDto: ResponseElectoralProcessDto }): Promise<ElectoralProcessResponse> {
+    const { schoolId, id, requestElectoralProcessDto } = data;
+    return await this.electoralProcessService.updateBySchoolIdAndId(schoolId, id, requestElectoralProcessDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.electoralProcessService.remove(+id);
-  }*/
+  @MessagePattern({ cmd: 'removeElectoralProcessBySchoolIdAndId' })
+  async removeBySchoolIdAndId(data: { schoolId: number, id: number }): Promise<ElectoralProcessResponse> {
+    const { schoolId, id } = data;
+    return await this.electoralProcessService.removeBySchoolIdAndId(schoolId, id);
+  }
+
 }
