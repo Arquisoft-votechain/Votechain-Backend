@@ -5,6 +5,7 @@ import { SchoolController } from './controllers/school.controller';
 import { RoleController } from './controllers/role.controller';
 import { MasterPoliticalPartyController } from './controllers/master-politica-party.controller';
 import { ConfigModule } from '@nestjs/config';
+import { PoliticalPartyParticipantController } from './controllers/political-party-participant.controller';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { ConfigModule } from '@nestjs/config';
     ClassroomController,
     SchoolController,
     RoleController,
-    MasterPoliticalPartyController
+    MasterPoliticalPartyController,
+    PoliticalPartyParticipantController
   ]
 })
 export class PoliticalPartyModule { }

@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
-import { RequestRoleDto } from '../models/role.dto';
+import { RequestRoleDto } from '../dtos/role.dto';
 
 @ApiTags('roles')
 @Controller('roles')

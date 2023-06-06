@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationTypes } from 'class-validator';
+import { ValidationTypes, useContainer } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
@@ -17,9 +17,20 @@ async function bootstrap() {
     }
   })
 
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true, // Aplicar la transformación automática a los DTOs
+      whitelist: true, // Filtrar propiedades no decoradas
+    }),
+  );
+
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
+
   await app.startAllMicroservices()
   await app.listen(+process.env.PORT);
   console.log(`App is running on port ${await app.getUrl()}`)
+
+  
 
   //app.setGlobalPrefix('api');
   

@@ -2,10 +2,10 @@ import { Body, Controller, Delete, Get, Inject, NotFoundException, Param, ParseI
 import { ClientProxy } from '@nestjs/microservices';
 import { ApiTags } from '@nestjs/swagger';
 import { HttpExceptionFilter } from 'src/util/http-exception.filter';
-import { RequestSchoolDto } from '../models/school.dto';
-import { RequestClassroomDto } from '../models/classroom.dto';
-import { RequestMasterPoliticalPartyDto } from '../models/master-political-party.dto';
-import { RequestElectoralProcessDto } from '../models/electoral-process.dto';
+import { RequestSchoolDto } from '../dtos/school.dto';
+import { RequestClassroomDto } from '../dtos/classroom.dto';
+import { RequestMasterPoliticalPartyDto } from '../dtos/master-political-party.dto';
+import { RequestElectoralProcessDto } from '../dtos/electoral-process.dto';
 import { catchError } from 'rxjs';
 import { error } from 'console';
 
