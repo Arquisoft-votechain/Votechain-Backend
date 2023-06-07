@@ -5,7 +5,8 @@ import { ApiTags } from "@nestjs/swagger";
 @ApiTags('electoral-processes')
 @Controller('electoral-processes')
 export class ElectoralProcessController {
-    constructor(@Inject('ELECTORAL_PROCESS_SERVICE') private client: ClientProxy) { }
+    constructor(@Inject('ELECTORAL_PROCESS_SERVICE') private client: ClientProxy,
+    @Inject('POLITICAL_PARTY_SERVICE') private clientPoliticalPartyService: ClientProxy) { }
 
     @Post(':electoralId/students/:studentId')
     async assignStudentWithElectoralProcess(
@@ -43,5 +44,10 @@ export class ElectoralProcessController {
     @Get(':electoralId/administrators')
     async getAdministratorsByElectoralProcessId(@Param('electoralId', ParseIntPipe) electoralId: number){
         return this.client.send({cmd: 'getAdministratorsByElectoralProcessId' },electoralId);
+    }
+
+    @Get(':electoralId/political-party-participants')
+    async getPoliticalPartyParticipantsByElectoralId(@Param('electoralId', ParseIntPipe) electoralId: number){
+        return this.clientPoliticalPartyService.send({cmd: 'getPoliticalPartyParticipantsByElectoralId' },electoralId);
     }
 }

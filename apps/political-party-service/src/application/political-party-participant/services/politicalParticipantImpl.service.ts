@@ -13,6 +13,12 @@ export class PoliticalPartyParticipantServiceImpl implements PoliticalPartyParti
         private readonly politicalPartyParticipantRepository: Repository<PoliticalPartyParticipant>,
         private readonly studentClient: StudentClient
     ) { }
+    
+    async getPoliticalPartyParticipantsByElectoralId(electoralId: number): Promise<PoliticalPartyParticipantBasicResponse[]> {
+        const politicalPartyParticipants = this.politicalPartyParticipantRepository.find(
+            {where: {electoral_process_id: electoralId},relations:['master_political_party']});
+        return politicalPartyParticipants;
+    }
 
     async assignStudentToPoliticalPartyParticipant(politicalParticipantId: number, studentId: number) {
         try {
