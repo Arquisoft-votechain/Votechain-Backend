@@ -33,10 +33,11 @@ export class StudentController {
   }
 
 
-  @Patch(':id')
   @MessagePattern({ cmd: 'updateStudent' })
-  updateStudent(@Param('id') id: string, @Body() updateStudentDto: UpdateStudentDto) {
-    return this.studentService.update(+id, updateStudentDto);
+  updateStudent(data: {id: number, studenRequest: UpdateStudentDto}) {
+    const {id,studenRequest} = data;
+    console.log(studenRequest);
+    return this.studentService.update(id, studenRequest);
   }
 
   @Delete(':id')

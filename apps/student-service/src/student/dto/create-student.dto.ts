@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, MinLength, MaxLength} from '@nestjs/class-validator';
+import { IsString, IsNotEmpty, IsNumber, MinLength, MaxLength, IsEmpty} from '@nestjs/class-validator';
 
 export class CreateStudentDto {
 
@@ -29,4 +29,10 @@ export class CreateStudentDto {
     @MaxLength(10)
     @IsNotEmpty()
     dni: string;
+
+
+    userId: number|null;
+    politicalpartyId:number|null;
+    classroomId: number|null;
+    rolId: number|null;
 }
