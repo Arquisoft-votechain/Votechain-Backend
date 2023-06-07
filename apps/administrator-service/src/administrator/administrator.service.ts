@@ -26,7 +26,7 @@ export class AdministratorService {
     return this.administratorRepository.find();
   }
 
-  async findOne(id: any){
+  async findOne(id: number){
     try{
       const AdministratorExist =  await this.administratorRepository.findOne({where: {id}});
 
