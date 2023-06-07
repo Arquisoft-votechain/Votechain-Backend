@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PoliticalPartyClient } from '../../../shared/school/school.client';
 import { ElectoralProcess, ElectoralProcessService, ProcessAdmin, ProcessAdminService, ProcessStudent, ProcessStudentService } from 'src/domain/index.domain';
-import { ElectoralProcessResponse } from '../dtos/electoralProcessResponse.dto';
+import { ElectoralProcessBasicResponse, ElectoralProcessResponse } from '../dtos/electoralProcessResponse.dto';
 import { ElectoralProcessRequest } from '../../index.application';
 import { AdministratorBasicResponse } from 'src/shared/administrator/administrator.response';
 import { StudentBasicResponse } from 'src/shared/student/student.response';
@@ -24,6 +24,7 @@ export class ElectoralProcessServiceImpl implements ElectoralProcessService, Pro
     private readonly studentClient: StudentClient,
     private readonly adminClient: AdminClient,
   ) { }
+ 
 
 
   async assignStudentByIdAnElectoralProcessId(studentId: number, electoralId: number) {
@@ -157,6 +158,28 @@ export class ElectoralProcessServiceImpl implements ElectoralProcessService, Pro
     )
 
     return students;
+  }
+
+  async getElectoralProcessesOfStudent(studentId: number): Promise<ElectoralProcessBasicResponse[]> {
+    const processStudents = await this.processStudentRepository.find({
+      where:{
+        studentId: studentId
+      },
+      relations:['electoralProcess']
+    }
+    );
+
+
+    var electoralProcess: ElectoralProcessBasicResponse[] = [];
+
+    await Promise.all(
+      processStudents.map(async (it) => {
+        const electProcess = await this.electoralProcessRepository.findOneBy({id:it.electoralProcess.id});
+        electoralProcess.push(electProcess);
+      })
+    )
+
+    return electoralProcess;
   }
   
   async getAdministratorsByElectoralProcessId(electoralId: number): Promise<AdministratorBasicResponse[]> {

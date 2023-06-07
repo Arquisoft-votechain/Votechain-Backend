@@ -1,6 +1,6 @@
 import { Controller} from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { ElectoralProcessRequest, ElectoralProcessResponse } from 'src/application/index.application';
+import { ElectoralProcessBasicResponse, ElectoralProcessRequest, ElectoralProcessResponse } from 'src/application/index.application';
 
 import { ElectoralProcessServiceImpl } from 'src/application/electoral-process/services/electoralProcessImpl.service';
 import { StudentBasicResponse } from 'src/shared/student/student.response';
@@ -73,6 +73,11 @@ export class ElectoralProcessController {
   @MessagePattern({ cmd: 'getAdministratorsByElectoralProcessId' })
   async getAdministratorsByElectoralProcessId(electoralId: number): Promise<AdministratorBasicResponse[]> {
     return await this.electoralProcessService.getAdministratorsByElectoralProcessId(electoralId);
+  }
+
+  @MessagePattern({ cmd: 'getElectoralProcessesWhereStudentIsParticipant' })
+  async getElectoralProcessesWhereStudentIsParticipant(studentId: number): Promise<ElectoralProcessBasicResponse[]> {
+    return await this.electoralProcessService.getElectoralProcessesOfStudent(studentId);
   }
 
 }
