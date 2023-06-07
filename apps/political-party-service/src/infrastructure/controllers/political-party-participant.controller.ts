@@ -12,4 +12,18 @@ export class PoliticalPartyParticipantController {
     const {masterId, electoralId, assignedDate} = data;
     return await this.politicalPartyParticipantService.findByMasterIdElectoralProcessIdAndDate(masterId,electoralId,assignedDate);
   }
+
+  @MessagePattern({cmd: 'assignStudentToPoliticalPartyParticipant'})
+  async assignStudentToPoliticalPartyParticipant(data: {politicalParticipantId: number, studentId: number})
+  {
+    const {politicalParticipantId, studentId} = data;
+    return await this.politicalPartyParticipantService.assignStudentToPoliticalPartyParticipant(politicalParticipantId,studentId);
+  }
+
+  @MessagePattern({cmd: 'unassignStudentToPoliticalPartyParticipant'})
+  async unassignStudentToPoliticalPartyParticipant(data: {politicalParticipantId: number, studentId: number})
+  {
+    const {politicalParticipantId, studentId} = data;
+    return await this.politicalPartyParticipantService.unassignStudentToPoliticalPartyParticipant(politicalParticipantId,studentId);
+  }
 }

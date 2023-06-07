@@ -3,11 +3,12 @@ import { PoliticalPartyParticipantController } from 'src/infrastructure/index.in
 import { PoliticalPartyParticipantServiceImpl } from '../index.application';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PoliticalPartyParticipant } from 'src/domain/index.domain';
+import { StudentClient } from 'src/shared/student/student.client';
 
 
 @Module({
   controllers: [PoliticalPartyParticipantController],
-  providers: [PoliticalPartyParticipantServiceImpl],
+  providers: [PoliticalPartyParticipantServiceImpl, StudentClient],
   imports:[
     TypeOrmModule.forFeature([PoliticalPartyParticipant])
   ]

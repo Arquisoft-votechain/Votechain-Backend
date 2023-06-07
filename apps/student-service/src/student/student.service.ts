@@ -61,13 +61,14 @@ export class StudentService {
     }
   }
 
-  async update(id: any, updateStudentDto: Partial<UpdateStudentDto>) {
+  async update(id: number, updateStudentDto: UpdateStudentDto) {
     const studentExist =  await this.studentRepository.findOne({where: {id}});
 
     if (!studentExist) throw new NotFoundException(`Student with id ${id} is not registered`);
     const updatedStudent = Object.assign(studentExist,updateStudentDto);
 
-    return await this.studentRepository.save(updatedStudent);
+    const resp = await this.studentRepository.save(updatedStudent);
+    return new StudentResponse('',resp);
     //return `This action updates a #${id} student`;
   }
 
