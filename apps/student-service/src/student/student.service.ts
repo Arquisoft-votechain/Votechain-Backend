@@ -29,7 +29,7 @@ export class StudentService {
     return this.studentRepository.find();
   }
 
-  async findOne(id: any){
+  async findOne(id: number){
     try{
       const studentExist =  await this.studentRepository.findOne({where: {id}});
 

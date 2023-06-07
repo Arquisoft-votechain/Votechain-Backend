@@ -9,7 +9,10 @@ import { HttpExceptionFilter } from "src/util/http-exception.filter";
 @UseFilters(new HttpExceptionFilter())
 export class StudentController {
   
-    constructor(@Inject('STUDENT_SERVICE') private StudentService: ClientProxy) {}
+    constructor(
+        @Inject('STUDENT_SERVICE') private StudentService: ClientProxy,
+        @Inject('ELECTORAL_PROCESS_SERVICE') private electoralProcessService: ClientProxy
+        ) {}
 
     @Post()
     createStudent(@Body() createStudentDto: RequestStudentDto) {
@@ -24,6 +27,11 @@ export class StudentController {
     @Get(':id')
     findOneStudent(@Param('id') id: string) {
         return this.StudentService.send({ cmd: 'findOneStudent' }, id);
+    }
+
+    @Get(':id/electoral-processes')
+    getElectoralProcessesWhereStudentIsParticipant(@Param('id') id: string) {
+        return this.electoralProcessService.send({ cmd: 'getElectoralProcessesWhereStudentIsParticipant' }, id);
     }
   
     @Get('/dni/:dni')

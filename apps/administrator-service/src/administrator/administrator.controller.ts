@@ -22,8 +22,8 @@ export class AdministratorController {
 
   @Get(':id')
   @MessagePattern({ cmd: 'findOneAdmin' })
-  findOneAdmin(@Param('id') id: string) {
-    return this.administratorService.findOne(+id);
+  findOneAdmin(@Param('id') id: number) {
+    return this.administratorService.findOne(id);
   }
 
   @Get('/dni/:dni')

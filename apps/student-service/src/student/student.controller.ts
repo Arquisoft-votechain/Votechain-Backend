@@ -22,8 +22,8 @@ export class StudentController {
 
   @Get(':id')
   @MessagePattern({ cmd: 'findOneStudent' })
-  findOneStudent(@Param('id') id: string) {
-    return this.studentService.findOne(+id);
+  findOneStudent(id: number) {
+    return this.studentService.findOne(id);
   }
 
   @Get('/dni/:dni')
