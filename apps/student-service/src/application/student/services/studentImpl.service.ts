@@ -68,6 +68,24 @@ export class StudentServiceImpl implements StudentService {
     }
   }
 
+  async findByUserId(userId: any){
+    try{
+      const studentExist =  await this.studentRepository.findOne(
+      {
+        where: {
+          userId: userId,
+        }
+      });
+
+      if (!studentExist) {
+        return new StudentResponse(`Student with User Id ${userId} is not registered`);
+        }
+    return new StudentResponse('',studentExist);
+    }catch(error){
+      return new StudentResponse(`An error ocurred when finding ` + error.message);
+    }
+  }
+
   async update(id: number, updateStudentDto: UpdateStudentDto) {
     const studentExist =  await this.studentRepository.findOne({where: {id}});
 

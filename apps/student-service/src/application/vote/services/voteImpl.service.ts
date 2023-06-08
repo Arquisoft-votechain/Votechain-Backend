@@ -16,14 +16,11 @@ export class VoteServiceImpl implements VoteService{
 
   async registerVote(studentId: number, politicalPartyId: number){
     try{
-      console.log('Antes Student');
     const studentIdentified = await this.studentRepository.findOne({where: {id: studentId}});
     if (!studentIdentified) {
       return new VoteResponse(`Student with id ${studentId} is not registered`);
     }
-    console.log('Antes Political Party');
     const politicalPartyIdentified = await this.politicalPartyClient.getPoliticalPartyParticipantById(politicalPartyId);
-    console.log(politicalPartyIdentified);
     if(!politicalPartyIdentified.success){
       return new VoteResponse(`Political Party Participant with id ${politicalPartyId} is not registered`);
     }
@@ -44,6 +41,19 @@ export class VoteServiceImpl implements VoteService{
 
   findAll() {
     return `This action returns all vote`;
+  }
+
+  async findCountVotesByPoliticalPartyId(pppId: number){
+    try{
+      const politicalPartyIdentified = await this.politicalPartyClient.getPoliticalPartyParticipantById(pppId);
+      if(!politicalPartyIdentified.success){
+        return new VoteResponse(`Political Party Participant with id ${pppId} is not registered`);
+      }
+      const listVotes = this.voteRepository.findAndCount({where:{politicalPartyId: pppId}});
+      return listVotes;
+    }catch(error){
+      return new VoteResponse(`An error ocurred when finding ` + error.message);
+    }
   }
 
   findOneVote(id: number)  {

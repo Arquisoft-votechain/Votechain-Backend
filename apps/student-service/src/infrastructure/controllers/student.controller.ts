@@ -32,6 +32,11 @@ export class StudentController {
     return this.studentService.findByDNI(+dni);
   }
 
+  @Get('/dni/:dni')
+  @MessagePattern({ cmd: 'findStudentByUserId' })
+  findStudentByUserId(@Param('userId') userId: number) {
+    return this.studentService.findByUserId(+userId);
+  }
 
   @MessagePattern({ cmd: 'updateStudent' })
   updateStudent(data: {id: number, studenRequest: UpdateStudentDto}) {

@@ -16,6 +16,12 @@ export class VoteController {
   }
 
   @Get()
+  @MessagePattern({cmd: 'findCountVotesByPoliticalPartyParticipantId'})
+  findCountVotesByPoliticalPartyParticipantId(pppId: number){
+    return this.voteService.findCountVotesByPoliticalPartyId(pppId);
+  }
+
+  @Get()
   findAllVotes() {
     return this.voteService.findAll();
   }
