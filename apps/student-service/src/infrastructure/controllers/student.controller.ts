@@ -45,4 +45,9 @@ export class StudentController {
   removeStudent(@Param('id') id: string) {
     return this.studentService.remove(+id);
   }
+
+  @MessagePattern({cmd: 'getStudentsByPoliticalPartyParticipantId'})
+  async getStudentsByPoliticalPartyParticipantId(politicalParticipantId: number){
+    return await this.studentService.getStudentsByPoliticalPartyParticipantId(politicalParticipantId);
+  }
 }

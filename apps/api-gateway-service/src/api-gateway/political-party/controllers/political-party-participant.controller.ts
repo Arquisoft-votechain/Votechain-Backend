@@ -5,7 +5,10 @@ import { ApiTags } from "@nestjs/swagger";
 @ApiTags('political-party-participants')
 @Controller('political-party-participants')
 export class PoliticalPartyParticipantController {
-  constructor(@Inject('POLITICAL_PARTY_SERVICE') private client: ClientProxy) { }
+  constructor(
+    @Inject('POLITICAL_PARTY_SERVICE') private client: ClientProxy,
+    @Inject('STUDENT_SERVICE') private clientStudent: ClientProxy,
+    ) { }
 
   @Post(':politicalParticipantId/students/:studentId')
   async assignStudentToPoliticalPartyParticipant(
@@ -19,6 +22,11 @@ export class PoliticalPartyParticipantController {
     @Param('politicalParticipantId',ParseIntPipe) politicalParticipantId: number,
     @Param('studentId',ParseIntPipe) studentId: number) {
     return this.client.send({cmd:'unassignStudentToPoliticalPartyParticipant'},{politicalParticipantId, studentId});
+  }
+
+  @Get(':politicalParticipantId/students')
+  async getStudentsByPoliticalPartyParticipantId(@Param('politicalParticipantId',ParseIntPipe) politicalParticipantId: number){
+    return this.clientStudent.send({cmd:'getStudentsByPoliticalPartyParticipantId'},politicalParticipantId);
   }
   /*@Get()
   findAllMasterPPs() {

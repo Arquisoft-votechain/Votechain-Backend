@@ -7,4 +7,5 @@ export interface StudentService{
     findByDNI(dniStudent: any);
     update(id: number, updateStudentDto: UpdateStudentDto);
     remove(id: any): Promise<void>;
+    getStudentsByPoliticalPartyParticipantId(politicalPartyParticipantId: number);
 }

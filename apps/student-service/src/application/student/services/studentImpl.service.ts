@@ -13,6 +13,10 @@ import { StudentService } from 'src/domain/student/services/student.interface.se
 export class StudentServiceImpl implements StudentService {
 
   constructor(@InjectRepository(Student) private studentRepository: Repository<Student>){}
+  
+  async getStudentsByPoliticalPartyParticipantId(politicalPartyParticipantId: number) {
+    return await this.studentRepository.findBy({politicalPartyId: politicalPartyParticipantId});
+  }
 
   async create(createStudentDto: CreateStudentDto): Promise<Student> {
     const newStudent = await this.studentRepository.save({
