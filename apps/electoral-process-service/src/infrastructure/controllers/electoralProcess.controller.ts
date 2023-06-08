@@ -28,6 +28,11 @@ export class ElectoralProcessController {
     return await this.electoralProcessService.findElectoralProcessBySchoolIdAndId(schoolId, id);
   }
 
+  @MessagePattern({ cmd: 'findOneElectoralProcessById' })
+  async findOneElectoralProcessById(id: number ): Promise<ElectoralProcessResponse> {
+    return await this.electoralProcessService.findOneElectoralProcessById(id);
+  }
+
   @MessagePattern({ cmd: 'updateElectoralProcessBySchoolIdAndId' })
   async updateBySchoolIdAndId(data: { schoolId: number, id: number, requestElectoralProcessDto: ElectoralProcessRequest }): Promise<ElectoralProcessResponse> {
     const { schoolId, id, requestElectoralProcessDto } = data;

@@ -3,11 +3,12 @@ import { ClassroomController, MasterPoliticalPartyController } from 'src/infrast
 import { MasterPoliticalPartyServiceImpl } from '../index.application';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MasterPoliticalParty, PoliticalPartyParticipant } from 'src/domain/index.domain';
+import { ElectoralProcessClient } from '../../shared/electoral-process/electoralProcess.client';
 
 
 @Module({
   controllers: [MasterPoliticalPartyController],
-  providers: [MasterPoliticalPartyServiceImpl],
+  providers: [MasterPoliticalPartyServiceImpl,ElectoralProcessClient],
   imports:[
     TypeOrmModule.forFeature([MasterPoliticalParty]),
     TypeOrmModule.forFeature([PoliticalPartyParticipant])

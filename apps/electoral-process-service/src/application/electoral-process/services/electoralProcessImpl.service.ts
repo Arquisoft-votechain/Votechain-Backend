@@ -25,7 +25,16 @@ export class ElectoralProcessServiceImpl implements ElectoralProcessService, Pro
     private readonly adminClient: AdminClient,
   ) { }
  
-
+  async findOneElectoralProcessById(id: number): Promise<ElectoralProcessResponse> {
+    try{
+      const electoral = await this.electoralProcessRepository.findOneBy({id: id});
+      if(!electoral) return new ElectoralProcessResponse(`An electoral process by id ${id} was not found`);
+      
+      return new ElectoralProcessResponse('',electoral);
+    }catch(error){
+      return new ElectoralProcessResponse('An error occurred while finding electoral process '+error.message)
+    }
+  }
 
   async assignStudentByIdAnElectoralProcessId(studentId: number, electoralId: number) {
     try{

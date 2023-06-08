@@ -1,5 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { Client, ClientProxy, Transport } from "@nestjs/microservices";
+import { ElectoralProcessReponse } from "./electoralProcess.response";
+import { lastValueFrom, map } from "rxjs";
 
 @Injectable()
 export class ElectoralProcessClient {
@@ -14,5 +16,12 @@ export class ElectoralProcessClient {
   })
   private readonly clientProxy: ClientProxy;
 
-  
+  async getElectoralProcessById(id: number): Promise<ElectoralProcessReponse>{
+    const response = await lastValueFrom(this.clientProxy.send({ cmd: 'findOneElectoralProcessById' }, id)
+      .pipe(
+        map(response => response as ElectoralProcessReponse)
+      ));
+
+    return response;
+  }
 }

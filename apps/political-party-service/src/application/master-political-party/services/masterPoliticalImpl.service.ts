@@ -6,6 +6,7 @@ import { MasterPoliticalBasicResponse,
     MasterPoliticalResponse, 
     PoliticalPartyPanticipantRequest, 
     PoliticalPartyPariticipantResponse } from "src/application/index.application";
+import { ElectoralProcessClient } from "src/shared/electoral-process/electoralProcess.client";
 
 @Injectable()
 export class MasterPoliticalPartyServiceImpl implements MasterPoliticalPartyService {
@@ -15,6 +16,7 @@ export class MasterPoliticalPartyServiceImpl implements MasterPoliticalPartyServ
         private readonly masterPoliticalPartyRepository: Repository<MasterPoliticalParty>,
         @InjectRepository(PoliticalPartyParticipant)
         private readonly politicalPartyParticipantRepository: Repository<PoliticalPartyParticipant>,
+        private readonly electoralProcessClient: ElectoralProcessClient
     ) { }
     
     
@@ -25,9 +27,18 @@ export class MasterPoliticalPartyServiceImpl implements MasterPoliticalPartyServ
             if (!masterPP) return new PoliticalPartyPariticipantResponse(`Master-political-party with id ${masterId} not found`)
 
             //Falta buscar que existe el electoral process
+            const electoralProcess = await this.electoralProcessClient.getElectoralProcessById(epid);
+            if(!electoralProcess.success) return new PoliticalPartyPariticipantResponse(electoralProcess.message);
+
+            const existedParticipant = this.politicalPartyParticipantRepository.findOneBy({
+                electoral_process_id: electoralProcess.resource.id,
+                master_political_party:{id: masterPP.id}
+            })
+
+            if(existedParticipant) return new PoliticalPartyPariticipantResponse('An master-political-party can only participate one time in the same electoral process')
 
             const politicalParticipantPreload = this.politicalPartyParticipantRepository.create(politicalParticipantRequest);
-            politicalParticipantPreload.electoral_process_id = epid;
+            politicalParticipantPreload.electoral_process_id = electoralProcess.resource.id;
             politicalParticipantPreload.master_political_party = masterPP;
 
             const politicalPartyParticipant = await this.politicalPartyParticipantRepository.save(politicalParticipantPreload);
