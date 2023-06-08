@@ -12,6 +12,13 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
+  @Post('/verifyUser')
+  @MessagePattern({cmd: 'verifyUser'})
+  verifyUser(@Body() data: {email: string, password: string}){
+    const {email,password} = data;
+    return this.userService.verifyUser(email,password);
+  }
+
   @Get()
   @MessagePattern({ cmd: 'findAllUsers' })
   findAllUsers() {

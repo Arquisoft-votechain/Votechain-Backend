@@ -17,3 +17,18 @@ export class RequestUserDto {
     password: string;
  
 }
+
+export class RequestVerifyUserDto {
+    @ApiProperty()
+    @IsEmail()
+    @IsNotEmpty()
+    email: string;
+
+    @ApiProperty()
+    @IsString()
+    @MinLength(6)
+    @MaxLength(10)
+    @IsNotEmpty()
+    password: string;
+ 
+}

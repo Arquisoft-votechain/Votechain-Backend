@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseFilters } from "@nestjs/common";
 import { ClientProxy } from "@nestjs/microservices";
-import { RequestUserDto } from "../models/user.dto";
+import { RequestUserDto, RequestVerifyUserDto } from "../models/user.dto";
 import { HttpExceptionFilter } from "src/util/http-exception.filter";
 import { ApiTags } from "@nestjs/swagger";
 
@@ -14,6 +14,11 @@ export class UserController {
     @Post()
     createUser(@Body() createUserDto: RequestUserDto) {
         return this.UserService.send({ cmd: 'createUser' }, createUserDto);
+    }
+
+    @Post('/verifyUser')
+    verifyUser(@Body() requestVerifyUser: RequestVerifyUserDto){
+        return this.UserService.send({cmd: 'verifyUser'}, requestVerifyUser);
     }
   
     @Get()

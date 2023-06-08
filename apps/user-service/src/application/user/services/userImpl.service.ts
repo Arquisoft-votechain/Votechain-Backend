@@ -12,20 +12,46 @@ import { UserService } from 'src/domain/index.domain';
 export class UserServiceImpl implements UserService {
   constructor(@InjectRepository(User) private userRepository: Repository<User>){}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async create(createUserDto: CreateUserDto){
+    try{
+    const UserExist =  await this.userRepository.findOne({where: {email: createUserDto.email}});
+    if (UserExist) {
+      return new UserResponse(`User with email ${createUserDto.email} is registered`);
+    }
     createUserDto.password = await hash(createUserDto.password, 10);
 
     const newUser = await this.userRepository.save({
       email: createUserDto.email,
       password: createUserDto.password
     });
-    return newUser;
+    return new UserResponse('',newUser);
+    }
+    catch (error){
+      return new UserResponse(`An error ocurred when finding ` + error.message);
+    }
     //return 'This action adds a new User';
   }
 
-  /*async decryptPassword(password: string, attempt: string): Promise<boolean> {
-    return await compare(attempt, password);
-  }*/
+  async verifyUser(email: string, password: string){
+    try{
+    const UserExist =  await this.userRepository.findOne({where: {email: email}});
+    if (!UserExist) {
+      return new UserResponse(`User with email ${email} is not registered`);
+      }
+    const verifiedPassword = await this.comparePassword(password, UserExist.password);
+    if (!verifiedPassword) {
+      return new UserResponse(`Password is incorrect`);
+    }
+    return verifiedPassword;
+    }
+    catch (error){
+      return new UserResponse(`An error ocurred when finding ` + error.message);
+    }
+  }
+
+  async comparePassword(password: string, attempt: string): Promise<boolean> {
+    return await compare(password, attempt);
+  }
 
   async findAll(): Promise<User[]> {
     return this.userRepository.find();
