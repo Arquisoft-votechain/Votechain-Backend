@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { StudentModule } from './student/student.module';
-import { VoteModule } from './vote/vote.module';
+import { StudentModule } from './application/student/student.module';
+import { VoteModule } from './application/vote/vote.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 

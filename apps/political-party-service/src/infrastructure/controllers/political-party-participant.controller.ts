@@ -26,4 +26,9 @@ export class PoliticalPartyParticipantController {
     const {politicalParticipantId, studentId} = data;
     return await this.politicalPartyParticipantService.unassignStudentToPoliticalPartyParticipant(politicalParticipantId,studentId);
   }
+
+  @MessagePattern({cmd: 'findOnePoliticalPartyParticipant'})
+  async findOnePoliticalPartyParticipant(politicalPartyParticipantId: number){
+    return await this.politicalPartyParticipantService.findOneById(politicalPartyParticipantId);
+  }
 }

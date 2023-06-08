@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Inject, Param, Patch, Post, UseFilters } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Inject, Param, ParseIntPipe, Patch, Post, UseFilters } from "@nestjs/common";
 import { RequestStudentDto } from "../models/student.dto";
 import { ClientProxy } from "@nestjs/microservices";
 import { ApiTags } from "@nestjs/swagger";
@@ -17,6 +17,11 @@ export class StudentController {
     @Post()
     createStudent(@Body() createStudentDto: RequestStudentDto) {
         return this.StudentService.send({ cmd: 'createStudent' }, createStudentDto);
+    }
+
+    @Post(':studentId/politicalpartyparticipant/:politicalPartyId')
+    registerVote(@Param('studentId', ParseIntPipe)studentId: number, @Param('politicalPartyId', ParseIntPipe)politicalPartyId: number) {
+        return this.StudentService.send({ cmd: 'registerVote' }, {studentId, politicalPartyId});
     }
   
     @Get()
