@@ -94,4 +94,9 @@ export class PoliticalPartyParticipantServiceImpl implements PoliticalPartyParti
         return specificDate;
     }
 
+    async findOneById(politicalPartyId: number) {
+        const politicalPartyExist = await this.politicalPartyParticipantRepository.findOne({where: {id: politicalPartyId}})
+        return new PoliticalPartyPariticipantResponse('',politicalPartyExist);
+    }
+
 }

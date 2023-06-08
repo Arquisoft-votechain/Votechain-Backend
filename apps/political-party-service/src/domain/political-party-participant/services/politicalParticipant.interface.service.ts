@@ -5,4 +5,5 @@ export interface PoliticalPartyParticipantService {
     : Promise<PoliticalPartyParticipantBasicResponse[]>;
     assignStudentToPoliticalPartyParticipant(studentId: number, politicalParticipantId: number);
     getPoliticalPartyParticipantsByElectoralId(electoralId: number): Promise<PoliticalPartyParticipantBasicResponse[]>;
+    findOneById(politicalPartyId: number);
 }

@@ -35,4 +35,5 @@ export class UserController {
     removeUser(@Param('id') id: string) {
         return this.UserService.send({ cmd: 'removeUser' }, id);
     }
+    
 }

@@ -32,4 +32,9 @@ export class PoliticalPartyParticipantController {
   {
     return await this.politicalPartyParticipantService.getPoliticalPartyParticipantsByElectoralId(electoralId);
   }
+  
+  @MessagePattern({cmd: 'findOnePoliticalPartyParticipant'})
+  async findOnePoliticalPartyParticipant(politicalPartyParticipantId: number){
+    return await this.politicalPartyParticipantService.findOneById(politicalPartyParticipantId);
+  }
 }
