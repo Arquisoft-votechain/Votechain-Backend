@@ -37,13 +37,11 @@ export class RequestStudentDto {
     @IsNotEmpty()
     dni: string;
 
-    /*@ApiProperty()
-    @IsEmpty()
-    user_id: number|null;
     @ApiProperty()
-    politicalparty_id:number|null;
+    @IsNotEmpty()
+    userId: number;
+
     @ApiProperty()
-    classroom_id: number|null;
-    @ApiProperty()
-    rol_id: number|null;*/
+    @IsNotEmpty()
+    classroomId: number;
 }

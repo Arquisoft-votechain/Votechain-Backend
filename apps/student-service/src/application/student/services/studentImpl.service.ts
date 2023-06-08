@@ -21,6 +21,8 @@ export class StudentServiceImpl implements StudentService {
       age: createStudentDto.age,
       identifier: createStudentDto.identifier,
       dni: createStudentDto.dni,
+      userId: createStudentDto.userId,
+      classroomId: createStudentDto.classroomId
     });
     return newStudent;
     //return 'This action adds a new student';

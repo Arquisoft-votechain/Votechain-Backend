@@ -30,9 +30,10 @@ export class CreateStudentDto {
     @IsNotEmpty()
     dni: string;
 
+    @IsNotEmpty()
+    userId: number;
 
-    userId: number|null;
-    politicalpartyId:number|null;
-    classroomId: number|null;
-    rolId: number|null;
+    @IsNotEmpty()
+    classroomId: number;
+
 }

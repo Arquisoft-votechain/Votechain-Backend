@@ -30,7 +30,7 @@ export class MasterPoliticalPartyServiceImpl implements MasterPoliticalPartyServ
             const electoralProcess = await this.electoralProcessClient.getElectoralProcessById(epid);
             if(!electoralProcess.success) return new PoliticalPartyPariticipantResponse(electoralProcess.message);
 
-            const existedParticipant = this.politicalPartyParticipantRepository.findOneBy({
+            const existedParticipant = await this.politicalPartyParticipantRepository.findOneBy({
                 electoral_process_id: electoralProcess.resource.id,
                 master_political_party:{id: masterPP.id}
             })
