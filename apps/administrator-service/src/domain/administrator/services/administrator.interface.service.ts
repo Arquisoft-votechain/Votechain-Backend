@@ -7,6 +7,7 @@ export interface AdministratorService{
     findAll(): Promise<Administrator[]>;
     findOne(id: number);
     findByDNI(dniAdministrator: any);
+    findByUserId(userId: any);
     update(id: any, updateAdministratorDto: Partial<UpdateAdministratorDto>);
     remove(id: any): Promise<void>;
 }

@@ -36,4 +36,8 @@ export class CreateStudentDto {
     @IsNotEmpty()
     classroomId: number;
 
+    rolId: number;
+
+    politicalPartyId: number;
+
 }

@@ -30,6 +30,11 @@ export class AdministratorController {
     findAdminByDNI(@Param('dni') dni: string) {
         return this.administratorService.send({ cmd: 'findAdminByDNI' }, dni);
     }
+
+    @Get('/user/:userId')
+    findAdminByUserId(@Param('userId') userId: string) {
+        return this.administratorService.send({ cmd: 'findAdminByUserId' }, userId);
+    }
   
     @Patch(':id')
     updateAdmin(@Param('id') id: string, @Body() updateAdministratorDto: RequestAdministratorDto) {

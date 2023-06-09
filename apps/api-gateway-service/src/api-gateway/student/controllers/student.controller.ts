@@ -43,6 +43,11 @@ export class StudentController {
     findStudentByDNI(@Param('dni') dni: string) {
         return this.StudentService.send({ cmd: 'findStudentByDNI' }, dni);
     }
+
+    @Get('/user/:userId')
+    findStudentByUserId(@Param('userId') userId: string) {
+        return this.StudentService.send({ cmd: 'findStudentByUserId' }, userId);
+    }
   
     @Patch(':id')
     updateStudent(@Param('id') id: string, @Body() updateStudentDto: RequestStudentDto) {

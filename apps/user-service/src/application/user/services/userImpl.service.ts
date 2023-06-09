@@ -42,7 +42,7 @@ export class UserServiceImpl implements UserService {
     if (!verifiedPassword) {
       return new UserResponse(`Password is incorrect`);
     }
-    return verifiedPassword;
+    return UserExist.id;
     }
     catch (error){
       return new UserResponse(`An error ocurred when finding ` + error.message);
