@@ -10,7 +10,8 @@ export class AdministratorController {
 
   @Post()
   @MessagePattern({ cmd: 'createAdmin' })
-  createAdmin(@Body() createAdministratorDto: CreateAdministratorDto) {
+  createAdmin(data: {createAdministratorDto: CreateAdministratorDto}) {
+    const {createAdministratorDto} = data
     return this.administratorService.create(createAdministratorDto);
   }
 
@@ -33,14 +34,15 @@ export class AdministratorController {
   }
 
   @Get('/user/:userId')
-  @MessagePattern({ cmd: 'findAdminByDNI' })
+  @MessagePattern({ cmd: 'findAdminByUserId' })
   findAdminByUserId(@Param('userId') userId: string) {
     return this.administratorService.findByUserId(+userId);
   }
 
   @Patch(':id')
   @MessagePattern({ cmd: 'updateAdmin' })
-  updateAdmin(@Param('id') id: string, @Body() updateAdministratorDto: UpdateAdministratorDto) {
+  updateAdmin(data: { id: string, updateAdministratorDto: UpdateAdministratorDto}) {
+    const {id, updateAdministratorDto} = data;
     return this.administratorService.update(+id, updateAdministratorDto);
   }
 

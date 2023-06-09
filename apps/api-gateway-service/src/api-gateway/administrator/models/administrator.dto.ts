@@ -35,4 +35,12 @@ export class RequestAdministratorDto {
     @MaxLength(10)
     @IsNotEmpty()
     dni: string;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    userId: number;
+
+    @ApiProperty()
+    @IsNotEmpty()
+    schoolId: number;
 }

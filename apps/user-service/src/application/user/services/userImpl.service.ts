@@ -22,7 +22,8 @@ export class UserServiceImpl implements UserService {
 
     const newUser = await this.userRepository.save({
       email: createUserDto.email,
-      password: createUserDto.password
+      password: createUserDto.password,
+      isAdmin: createUserDto.isAdmin
     });
     return new UserResponse('',newUser);
     }
