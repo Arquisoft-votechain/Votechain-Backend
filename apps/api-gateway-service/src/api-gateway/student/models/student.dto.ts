@@ -44,4 +44,10 @@ export class RequestStudentDto {
     @ApiProperty()
     @IsNotEmpty()
     classroomId: number;
+
+    @ApiProperty()
+    rolId: number;
+
+    @ApiProperty()
+    politicalPartyId: number;
 }

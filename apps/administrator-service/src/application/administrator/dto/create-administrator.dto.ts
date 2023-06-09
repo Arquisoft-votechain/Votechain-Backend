@@ -28,4 +28,10 @@ export class CreateAdministratorDto {
     @MaxLength(10)
     @IsNotEmpty()
     dni: string;
+
+    @IsNotEmpty()
+    userId: number;
+
+    @IsNotEmpty()
+    schoolId: number;
 }

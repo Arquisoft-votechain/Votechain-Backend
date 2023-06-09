@@ -5,20 +5,41 @@ import { AdministratorResponse } from '../dto/administrator.response';
 import { Administrator, AdministratorService } from 'src/domain/index.domain';
 import { CreateAdministratorDto } from '../dto/create-administrator.dto';
 import { UpdateAdministratorDto } from '../dto/update-administrator.dto';
+import { SchoolClient } from 'src/shared/school/school.client';
+import { UserClient } from 'src/shared/user/user.client';
 
 @Injectable()
 export class AdministratorServiceImpl implements AdministratorService {
-  constructor(@InjectRepository(Administrator) private administratorRepository: Repository<Administrator>){}
+  constructor(@InjectRepository(Administrator) private administratorRepository: Repository<Administrator>,
+    private readonly schoolClient: SchoolClient,
+    private readonly userClient: UserClient){}
 
-  async create(createAdministratorDto: CreateAdministratorDto): Promise<Administrator> {
+  async create(createAdministratorDto: CreateAdministratorDto){
+
+    try{
+    const UserExist = this.userClient.getUserById(createAdministratorDto.userId);
+    if(!UserExist){
+      return new AdministratorResponse(`User with id ${createAdministratorDto.userId} is not registered`);
+    }
+
+    const SchoolExist = this.schoolClient.getSchoolById(createAdministratorDto.schoolId);
+    if(!SchoolExist){
+      return new AdministratorResponse(`School with id ${createAdministratorDto.schoolId} is not registered`);
+    }
+
     const newAdministrator = await this.administratorRepository.save({
       name: createAdministratorDto.name,
       lastName: createAdministratorDto.lastName,
       age: createAdministratorDto.age,
       identifier: createAdministratorDto.identifier,
       dni: createAdministratorDto.dni,
-    });
-    return newAdministrator;
+      schoolId: createAdministratorDto.schoolId,
+      userId: createAdministratorDto.userId,
+      });
+    return new AdministratorResponse('',newAdministrator);
+    }catch (error){
+      return new AdministratorResponse(`An error ocurred when finding ` + error.message);
+    }
     //return 'This action adds a new Administrator';
   }
 
@@ -28,7 +49,7 @@ export class AdministratorServiceImpl implements AdministratorService {
 
   async findOne(id: number){
     try{
-      const AdministratorExist =  await this.administratorRepository.findOne({where: {id}});
+      const AdministratorExist =  await this.administratorRepository.findOne({where: {id: id}});
 
     if (!AdministratorExist) {
       return new AdministratorResponse(`Administrator with id ${id} is not registered`);
@@ -78,7 +99,7 @@ export class AdministratorServiceImpl implements AdministratorService {
   }
 
   async update(id: any, updateAdministratorDto: Partial<UpdateAdministratorDto>) {
-    const AdministratorExist =  await this.administratorRepository.findOne({where: {id}});
+    const AdministratorExist =  await this.administratorRepository.findOne({where: {id: id}});
 
     if (!AdministratorExist) throw new NotFoundException(`Administrator with id ${id} is not registered`);
     const updatedAdministrator = Object.assign(AdministratorExist,updateAdministratorDto);

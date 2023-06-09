@@ -41,7 +41,6 @@ export class StudentController {
   @MessagePattern({ cmd: 'updateStudent' })
   updateStudent(data: {id: number, studenRequest: UpdateStudentDto}) {
     const {id,studenRequest} = data;
-    console.log(studenRequest);
     return this.studentService.update(id, studenRequest);
   }
 

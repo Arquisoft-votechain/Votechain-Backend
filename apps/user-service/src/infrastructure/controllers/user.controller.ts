@@ -27,13 +27,14 @@ export class UserController {
 
   @Get(':id')
   @MessagePattern({ cmd: 'findOneUser' })
-  findOneUser(@Param('id') id: string) {
+  findOneUser(@Param('id') id: any) {
     return this.userService.findOne(+id);
   }
 
   @Patch(':id')
   @MessagePattern({ cmd: 'updateUser' })
-  updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  updateUser(data: {id: any, updateUserDto: UpdateUserDto}) {
+    const {id , updateUserDto} = data;
     return this.userService.update(+id, updateUserDto);
   }
 

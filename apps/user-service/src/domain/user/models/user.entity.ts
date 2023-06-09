@@ -16,5 +16,17 @@ export class User {
         length: 200
     })
     password: string;
+
+    @Column('bool',{
+        default: true,
+        nullable: true
+    })
+    enabled: boolean;
     
+    @Column('bool',{
+        name: 'is_admin',
+        default: false,
+        nullable: true
+    })
+    isAdmin: boolean;
 }
