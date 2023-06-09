@@ -97,16 +97,15 @@ export class StudentServiceImpl implements StudentService {
       {
         return new StudentResponse(`Classroom with Id ${classroomId} is not registered`);
       }
-      const studentExist =  await this.studentRepository.findOne(
+      const studentExist =  await this.studentRepository.findOneBy(
         {
-          where: {
             id: id,
             classroomId: classroomId
           }
-        });
+        );
 
       if (!studentExist) {
-      return new StudentResponse(`Student with id ${id} is not registered`);
+      return new StudentResponse(`Student with id ${id} and Classroom Id ${classroomId} is not registered`);
       }
       return new StudentResponse('',studentExist);
     }
@@ -115,14 +114,14 @@ export class StudentServiceImpl implements StudentService {
     }
   }
   
-  async findAllByClassroomId(classroomId: any) {
+  async findAllByClassroomId(classroomId: number) {
     try{
       const ClassroomExist = this.classroomClient.getClassroomById(classroomId);
       if(!ClassroomExist)
       {
         return new StudentResponse(`Classroom with Id ${classroomId} is not registered`);
       }
-      const listStudents = this.studentRepository.find({where: {classroomId: classroomId}})
+      const listStudents = this.studentRepository.findBy({classroomId: classroomId})
       return listStudents;
     }
     catch(error){

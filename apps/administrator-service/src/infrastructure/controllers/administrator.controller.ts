@@ -23,19 +23,19 @@ export class AdministratorController {
 
   @Get(':id')
   @MessagePattern({ cmd: 'findOneAdmin' })
-  findOneAdmin(@Param('id') id: number) {
+  findOneAdmin(id: number) {
     return this.administratorService.findOne(id);
   }
 
   @Get('/dni/:dni')
   @MessagePattern({ cmd: 'findAdminByDNI' })
-  findAdminByDNI(@Param('dni') dni: string) {
+  findAdminByDNI(dni: string) {
     return this.administratorService.findByDNI(+dni);
   }
 
   @Get('/user/:userId')
   @MessagePattern({ cmd: 'findAdminByUserId' })
-  findAdminByUserId(@Param('userId') userId: string) {
+  findAdminByUserId( userId: any) {
     return this.administratorService.findByUserId(+userId);
   }
 

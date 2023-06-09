@@ -28,27 +28,27 @@ export class StudentController {
 
   @Get('/dni/:dni')
   @MessagePattern({ cmd: 'findStudentByDNI' })
-  findStudentByDNI(@Param('dni') dni: string) {
+  findStudentByDNI(dni: string) {
     return this.studentService.findByDNI(+dni);
   }
 
   @Get('/dni/:dni')
   @MessagePattern({ cmd: 'findStudentByUserId' })
-  findStudentByUserId(@Param('userId') userId: number) {
+  findStudentByUserId(userId: number) {
     return this.studentService.findByUserId(+userId);
   }
 
   @Get('/classroom/:classroomId')
   @MessagePattern({ cmd: 'findStudentsByClassroomId' })
-  findStudentsByClassroomId(@Param('classroomId') classroomId: number){
-    return this.studentService.findAllByClassroomId(+classroomId);
+  async findStudentsByClassroomId(classroomId: number){
+    return await this.studentService.findAllByClassroomId(+classroomId);
   }
 
   @Get(':id/classroom/:classroomId')
   @MessagePattern({ cmd: 'findOneStudentByClassroomId' })
-  findOneStudentByClassroomId(data: {id: number, classroomId: number}){
+  async findOneStudentByClassroomId(data: {id: number, classroomId: number}){
     const {id, classroomId} = data
-    return this.studentService.findByClassroomId(id, classroomId);
+    return await this.studentService.findByClassroomId(id, classroomId);
   }
 
   @MessagePattern({ cmd: 'updateStudent' })

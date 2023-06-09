@@ -5,10 +5,12 @@ import { PoliticalPartyParticipantClient } from 'src/shared/political-party-part
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Student, Vote } from 'src/domain/index.domain';
 import { StudentServiceImpl } from '../index.application';
+import { UserClient } from 'src/shared/user/user.client';
+import { ClassroomClient } from 'src/shared/classroom/classroom.client';
 
 @Module({
   controllers: [VoteController],
-  providers: [VoteServiceImpl, PoliticalPartyParticipantClient, StudentServiceImpl],
+  providers: [VoteServiceImpl, PoliticalPartyParticipantClient, StudentServiceImpl, UserClient, ClassroomClient],
   imports:[
     TypeOrmModule.forFeature([Student]),
     TypeOrmModule.forFeature([Vote]),
