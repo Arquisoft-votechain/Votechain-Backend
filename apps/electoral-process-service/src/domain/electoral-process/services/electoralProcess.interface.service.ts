@@ -7,4 +7,5 @@ export interface ElectoralProcessService{
     updateElectoralProcessBySchoolIdAndId(schoolId: number, id: number, electoraProcessRequest: ElectoralProcessRequest): Promise<ElectoralProcessResponse>;
     deleteElectoralProcessBySchoolIdAndId(schoolId: number, id: number): Promise<ElectoralProcessResponse>;
     getElectoralProcessesOfStudent(studentId: number): Promise<ElectoralProcessBasicResponse[]>;
+    getVotesOfElectoralProcessById(electoralProcessId: number);
 }

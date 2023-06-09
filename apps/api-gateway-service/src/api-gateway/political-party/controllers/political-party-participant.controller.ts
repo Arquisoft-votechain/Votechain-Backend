@@ -28,6 +28,11 @@ export class PoliticalPartyParticipantController {
   async getStudentsByPoliticalPartyParticipantId(@Param('politicalParticipantId',ParseIntPipe) politicalParticipantId: number){
     return this.clientStudent.send({cmd:'getStudentsByPoliticalPartyParticipantId'},politicalParticipantId);
   }
+
+  @Get(':politicalParticipantId/votes')
+  async findCountVotesByPoliticalPartyParticipantId(@Param('politicalParticipantId',ParseIntPipe) politicalParticipantId: number){
+    return this.clientStudent.send({cmd:'findCountVotesByPoliticalPartyParticipantId'},politicalParticipantId);
+  }
   /*@Get()
   findAllMasterPPs() {
     return this.client.send({ cmd: 'findAllMasterPPs' }, '');

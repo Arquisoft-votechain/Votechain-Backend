@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { SchoolBasicResponse, SchoolReponse } from './school.reponse';
 import { lastValueFrom, map } from 'rxjs';
+import { PoliticalPartyPanticipantDto } from '../political-party-participant/politicalPartyParticipant.dto';
 
 @Injectable()
 export class PoliticalPartyClient {
@@ -24,4 +25,16 @@ export class PoliticalPartyClient {
 
     return response;
   }
+
+  async getPoliticalPartyParticipantsByElectoralId(electoralId: number) {
+
+    const response = await lastValueFrom(this.clientProxy.send<[]>({cmd: 'getPoliticalPartyParticipantsByElectoralId' },electoralId)
+    .pipe(
+      map(resp => resp.map(item => item as PoliticalPartyPanticipantDto))
+    )
+    );
+
+    return response;
+  }
+
 }
