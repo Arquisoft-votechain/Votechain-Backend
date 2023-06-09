@@ -59,6 +59,24 @@ export class AdministratorServiceImpl implements AdministratorService {
     }
   }
 
+  async findByUserId(userId: any){
+    try{
+      const administratorExist = await this.administratorRepository.findOne(
+      {
+        where: {
+          userId: userId,
+        }
+      });
+
+      if (!administratorExist) {
+        return new AdministratorResponse(`Administrator with User Id ${userId} is not registered`);
+        }
+    return new AdministratorResponse('',administratorExist);
+    }catch(error){
+      return new AdministratorResponse(`An error ocurred when finding ` + error.message);
+    }
+  }
+
   async update(id: any, updateAdministratorDto: Partial<UpdateAdministratorDto>) {
     const AdministratorExist =  await this.administratorRepository.findOne({where: {id}});
 

@@ -38,7 +38,7 @@ export class StudentServiceImpl implements StudentService {
 
   async findOne(id: number){
     try{
-      const studentExist =  await this.studentRepository.findOne({where: {id}});
+      const studentExist =  await this.studentRepository.findOne({where: {id: id}});
 
       if (!studentExist) {
       return new StudentResponse(`Student with id ${id} is not registered`);
@@ -87,7 +87,7 @@ export class StudentServiceImpl implements StudentService {
   }
 
   async update(id: number, updateStudentDto: UpdateStudentDto) {
-    const studentExist =  await this.studentRepository.findOne({where: {id}});
+    const studentExist =  await this.studentRepository.findOne({where: {id: id}});
 
     if (!studentExist) throw new NotFoundException(`Student with id ${id} is not registered`);
     const updatedStudent = Object.assign(studentExist,updateStudentDto);
