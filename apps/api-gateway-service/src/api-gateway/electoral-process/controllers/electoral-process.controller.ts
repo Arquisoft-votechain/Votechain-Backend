@@ -55,4 +55,9 @@ export class ElectoralProcessController {
     async findOneElectoralProcessById(@Param('id',ParseIntPipe) electoralId: number){
         return this.client.send({cmd: 'findOneElectoralProcessById'},electoralId);
     }
+
+    @Get(':id/votes')
+    async getVotesOfElectoralProcessById(@Param('id', ParseIntPipe) electoralId: number){
+        return this.client.send({cmd: 'getVotesOfElectoralProcessById'},electoralId);
+    }
 }

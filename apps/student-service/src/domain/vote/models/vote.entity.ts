@@ -29,4 +29,10 @@ export class Vote {
         nullable: false
     })
     politicalPartyId: number;
+
+    @Column('int', {
+        name: 'electoral_process_id',
+        nullable: false
+    })
+    electoralProcessId: number;
 }

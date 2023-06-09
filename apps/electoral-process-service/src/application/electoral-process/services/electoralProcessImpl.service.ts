@@ -9,6 +9,8 @@ import { AdministratorBasicResponse } from 'src/shared/administrator/administrat
 import { StudentBasicResponse } from 'src/shared/student/student.response';
 import { StudentClient } from 'src/shared/student/student.client';
 import { AdminClient } from 'src/shared/administrator/administrator.client';
+import { BaseResponse } from 'src/utils/base.response';
+import { VoteDto, VoteResponse } from 'src/shared/votes/vote.dto';
 
 @Injectable()
 export class ElectoralProcessServiceImpl implements ElectoralProcessService, ProcessAdminService, ProcessStudentService {
@@ -24,6 +26,23 @@ export class ElectoralProcessServiceImpl implements ElectoralProcessService, Pro
     private readonly studentClient: StudentClient,
     private readonly adminClient: AdminClient,
   ) { }
+
+  async getVotesOfElectoralProcessById(electoralProcessId: number) {
+    const politicalParticipants = await this.politicalPartyClient.getPoliticalPartyParticipantsByElectoralId(electoralProcessId);
+    if(politicalParticipants.length === 0) 
+    return new VoteResponse('The electoral process has 0 votes registered because there are not Political Party Participants or electoralProcessId not exist');
+
+  
+    var voteDto = new VoteDto();
+    voteDto.votes = 0;
+
+    for (const participant of politicalParticipants) {
+    const votesCount = await this.studentClient.findCountVotesByPoliticalPartyParticipantId(participant.id);
+    voteDto.votes += votesCount.votes;
+  }
+
+    return new VoteResponse('',voteDto);
+  }
  
   async findOneElectoralProcessById(id: number): Promise<ElectoralProcessResponse> {
     try{

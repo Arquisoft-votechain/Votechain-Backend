@@ -5,6 +5,7 @@ import { lastValueFrom, map } from "rxjs";
 
 @Injectable()
 export class StudentClient {
+  
 
   @Client({
     transport: Transport.TCP,
@@ -22,6 +23,15 @@ export class StudentClient {
         map(response => response as StudentReponse)
       ));
 
+    return response;
+  }
+
+  async findCountVotesByPoliticalPartyParticipantId(id: number) {
+    const response = await lastValueFrom(this.clientProxy.send({cmd: 'findCountVotesByPoliticalPartyParticipantId'},id)
+      .pipe(
+        map(response => response as {votes:number})
+      )
+    );
     return response;
   }
 }

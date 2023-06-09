@@ -5,6 +5,7 @@ import { ElectoralProcessBasicResponse, ElectoralProcessRequest, ElectoralProces
 import { ElectoralProcessServiceImpl } from 'src/application/electoral-process/services/electoralProcessImpl.service';
 import { StudentBasicResponse } from 'src/shared/student/student.response';
 import { AdministratorBasicResponse } from 'src/shared/administrator/administrator.response';
+import { VoteResponse } from 'src/shared/votes/vote.dto';
 
 @Controller('electoral-process')
 export class ElectoralProcessController {
@@ -83,6 +84,12 @@ export class ElectoralProcessController {
   @MessagePattern({ cmd: 'getElectoralProcessesWhereStudentIsParticipant' })
   async getElectoralProcessesWhereStudentIsParticipant(studentId: number): Promise<ElectoralProcessBasicResponse[]> {
     return await this.electoralProcessService.getElectoralProcessesOfStudent(studentId);
+  }
+
+  @MessagePattern({ cmd: 'getVotesOfElectoralProcessById' })
+  async getVotesOfElectoralProcessById(electoralId: number): Promise<VoteResponse>{
+    
+    return await this.electoralProcessService.getVotesOfElectoralProcessById(electoralId);
   }
 
 }
