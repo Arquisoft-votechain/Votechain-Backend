@@ -44,6 +44,16 @@ export class StudentController {
         return this.StudentService.send({ cmd: 'findStudentByDNI' }, dni);
     }
 
+    @Get('/classroom/:classroomId')
+    findStudentsByClassroomId(@Param('classroomId') classroomId: any){
+        return this.StudentService.send({cmd: 'findStudentsByClassroomId'},classroomId)
+    }
+
+    @Get(':studentId/classroom/:classroomId')
+    findOneStudentByClassroomId(@Param('studentId') studentId: any, @Param('classroomId') classroomId: any){
+        return this.StudentService.send({cmd: 'findOneStudentByClassroomId'},{studentId, classroomId});
+    }
+
     @Get('/user/:userId')
     findStudentByUserId(@Param('userId') userId: string) {
         return this.StudentService.send({ cmd: 'findStudentByUserId' }, userId);

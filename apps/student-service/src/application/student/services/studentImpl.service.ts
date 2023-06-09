@@ -6,13 +6,17 @@ import { Student } from '../../../domain/student/models/student.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StudentResponse } from '../dto/student.response';
 import { StudentService } from 'src/domain/student/services/student.interface.service';
+import { UserClient } from 'src/shared/user/user.client';
+import { ClassroomClient } from 'src/shared/classroom/classroom.client';
 
 
 
 @Injectable()
 export class StudentServiceImpl implements StudentService {
 
-  constructor(@InjectRepository(Student) private studentRepository: Repository<Student>){}
+  constructor(@InjectRepository(Student) private studentRepository: Repository<Student>,
+  private readonly userClient: UserClient,
+  private readonly classroomClient: ClassroomClient){}
   
   async getStudentsByPoliticalPartyParticipantId(politicalPartyParticipantId: number) {
     return await this.studentRepository.findBy({politicalPartyId: politicalPartyParticipantId});
@@ -82,6 +86,46 @@ export class StudentServiceImpl implements StudentService {
         }
     return new StudentResponse('',studentExist);
     }catch(error){
+      return new StudentResponse(`An error ocurred when finding ` + error.message);
+    }
+  }
+
+  async findByClassroomId(id: any, classroomId: any) {
+    try{
+      const ClassroomExist = this.classroomClient.getClassroomById(classroomId);
+      if(!ClassroomExist)
+      {
+        return new StudentResponse(`Classroom with Id ${classroomId} is not registered`);
+      }
+      const studentExist =  await this.studentRepository.findOne(
+        {
+          where: {
+            id: id,
+            classroomId: classroomId
+          }
+        });
+
+      if (!studentExist) {
+      return new StudentResponse(`Student with id ${id} is not registered`);
+      }
+      return new StudentResponse('',studentExist);
+    }
+    catch(error){
+      return new StudentResponse(`An error ocurred when finding ` + error.message);
+    }
+  }
+  
+  async findAllByClassroomId(classroomId: any) {
+    try{
+      const ClassroomExist = this.classroomClient.getClassroomById(classroomId);
+      if(!ClassroomExist)
+      {
+        return new StudentResponse(`Classroom with Id ${classroomId} is not registered`);
+      }
+      const listStudents = this.studentRepository.find({where: {classroomId: classroomId}})
+      return listStudents;
+    }
+    catch(error){
       return new StudentResponse(`An error ocurred when finding ` + error.message);
     }
   }

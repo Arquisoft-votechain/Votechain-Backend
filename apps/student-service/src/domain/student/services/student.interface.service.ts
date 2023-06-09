@@ -6,6 +6,8 @@ export interface StudentService{
     findOne(id: number);
     findByDNI(dniStudent: any);
     findByUserId(userId: any);
+    findByClassroomId(id: any, classroomId: any);
+    findAllByClassroomId(classroomId: any);
     update(id: number, updateStudentDto: UpdateStudentDto);
     remove(id: any): Promise<void>;
     getStudentsByPoliticalPartyParticipantId(politicalPartyParticipantId: number);
