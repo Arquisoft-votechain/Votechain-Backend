@@ -1,0 +1,15 @@
+version: "3"
+services:
+  api-gateway-context:
+
+    #image: political-party-context:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-gateway-context
+
+    env_file:
+      - .env
+    ports:
+      - "3001:3000"
+    
