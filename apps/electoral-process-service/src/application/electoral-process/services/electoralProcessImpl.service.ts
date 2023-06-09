@@ -32,7 +32,6 @@ export class ElectoralProcessServiceImpl implements ElectoralProcessService, Pro
     if(politicalParticipants.length === 0) 
     return new VoteResponse('The electoral process has 0 votes registered because there are not Political Party Participants or electoralProcessId not exist');
 
-  
     var voteDto = new VoteDto();
     voteDto.votes = 0;
 
