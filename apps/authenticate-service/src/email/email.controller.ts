@@ -16,7 +16,7 @@ export class EmailController {
     //@Post('send')
     @MessagePattern({ cmd: 'send' })
     @UsePipes(new ValidationPipe({ transform: true }))
-    async sendEmail(@Body() email:EmailRequest) {
+    async sendEmail(email:EmailRequest) {
         //console.log(email);
 
         return await this.emailService.send(email);
