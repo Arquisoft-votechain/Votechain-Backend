@@ -2,16 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { lastValueFrom, map } from 'rxjs';
 import { UserDto } from './user.dto';
+import { config } from 'dotenv';
 
-
+config()
 @Injectable()
 export class UserClient {
 
   @Client({
     transport: Transport.TCP,
     options: {
-      host: '127.0.0.1',
-      port: 4203,
+      host: process.env.USER_SERVICE_HOSTNAME,
+      port: +process.env.USER_SERVICE_PORT,
     },
   })
   private readonly clientProxy: ClientProxy;

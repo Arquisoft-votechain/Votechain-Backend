@@ -3,18 +3,18 @@ import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.TCP,
+      options:{
+        host: process.env.HOSTNAME,
+        port: +process.env.PORT
+      }
+    },
+  );
+  
+  await app.listen()
 
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.TCP,
-    options:{
-      host: process.env.HOSTNAME,
-      port: +process.env.PORT
-    }
-  })
-
-  await app.startAllMicroservices()
-  await app.listen(+process.env.PORT);
-  console.log(`App is running on port ${await app.getUrl()}`)
 }
 bootstrap();

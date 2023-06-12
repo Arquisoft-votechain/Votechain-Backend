@@ -2,7 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { Client, ClientProxy, Transport } from "@nestjs/microservices";
 import { StudentBasicResponse, StudentReponse } from "./student.response";
 import { lastValueFrom, map } from "rxjs";
+import { config } from 'dotenv';
 
+config()
 @Injectable()
 export class StudentClient {
 
@@ -10,8 +12,8 @@ export class StudentClient {
   @Client({
     transport: Transport.TCP,
     options: {
-      host: process.env.student_hostname,
-      port: 4204, //Por alguna razon no carga el port desde .env
+      host: process.env.STUDENT_SERVICE_HOSTNAME,
+      port: +process.env.STUDENT_SERVICE_PORT, //Por alguna razon no carga el port desde .env
     },
   })
   private readonly clientProxy: ClientProxy;

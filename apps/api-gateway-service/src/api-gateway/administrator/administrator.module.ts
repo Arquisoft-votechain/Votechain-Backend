@@ -12,8 +12,8 @@ import { ConfigModule } from '@nestjs/config';
         name: 'ADMINISTRATOR_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: process.env.HOSTNAME,
-          port: +process.env.administrator_service_port,
+          host: process.env.ADMIN_SERVICE_HOSTNAME,
+          port: +process.env.ADMIN_SERVICE_PORT,
         },
       },
     ]),

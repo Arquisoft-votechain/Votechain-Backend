@@ -15,24 +15,24 @@ import { PoliticalPartyParticipantController } from './controllers/political-par
         name: 'POLITICAL_PARTY_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: process.env.HOSTNAME,
-          port: +process.env.political_party_service_port,
+          host: process.env.POLITICAL_SERVICE_HOSTNAME,
+          port: +process.env.POLITICAL_SERVICE_PORT,
         },
       },
       {
         name: 'ELECTORAL_PROCESS_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: process.env.HOSTNAME,
-          port: +process.env.electoral_process_service_port,
+          host: process.env.ELECTORAL_SERVICE_HOSTNAME,
+          port: +process.env.ELECTORAL_SERVICE_PORT,
         },
       },
       {
         name: 'STUDENT_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: process.env.HOSTNAME,
-          port: +process.env.student_service_port,
+          host: process.env.STUDENT_SERVICE_HOSTNAME,
+          port: +process.env.STUDENT_SERVICE_PORT,
         },
       },
     ]),

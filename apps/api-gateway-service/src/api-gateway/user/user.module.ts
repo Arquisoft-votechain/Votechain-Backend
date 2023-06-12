@@ -12,8 +12,8 @@ import { ConfigModule } from '@nestjs/config';
         name: 'USER_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: process.env.HOSTNAME,
-          port: +process.env.user_service_port,
+          host: process.env.USER_SERVICE_HOSTNAME,
+          port: +process.env.USER_SERVICE_PORT,
         },
       },
     ]),

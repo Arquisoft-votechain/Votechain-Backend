@@ -3,15 +3,17 @@ import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { SchoolBasicResponse, SchoolReponse } from './school.reponse';
 import { lastValueFrom, map } from 'rxjs';
 import { PoliticalPartyPanticipantDto } from '../political-party-participant/politicalPartyParticipant.dto';
+import { config } from 'dotenv';
 
+config()
 @Injectable()
 export class PoliticalPartyClient {
 
   @Client({
     transport: Transport.TCP,
     options: {
-      host: process.env.political_party_hostname,
-      port: 4201, //Por alguna razon no carga el port desde .env
+      host: process.env.POLITICAL_SERVICE_HOSTNAME,
+      port: +process.env.POLITICAL_SERVICE_PORT, //Por alguna razon no carga el port desde .env
     },
   })
   private readonly clientProxy: ClientProxy;

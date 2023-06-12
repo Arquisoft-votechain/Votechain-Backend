@@ -11,8 +11,8 @@ import { ConfigModule } from '@nestjs/config';
         name: 'AUTHENTICATE_SERVICE',
         transport: Transport.TCP,
         options: {
-          host: process.env.HOSTNAME,
-          port: +process.env.authenticate_service_port,
+          host: process.env.AUTH_SERVICE_HOSTNAME,
+          port: +process.env.AUTH_SERVICE_PORT,
         },
       },
     ]),

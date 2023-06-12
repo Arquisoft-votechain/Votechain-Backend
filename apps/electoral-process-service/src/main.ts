@@ -5,15 +5,16 @@ import { useContainer } from '@nestjs/class-validator';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.TCP,
-    options:{
-      host: process.env.HOSTNAME,
-      port: +process.env.PORT
-    }
-  });
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.TCP,
+      options:{
+        host: process.env.HOSTNAME,
+        port: +process.env.PORT
+      }
+    },
+  );
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -25,8 +26,6 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
 
-  await app.startAllMicroservices()
-  await app.listen(+process.env.PORT);
-  console.log(`App is running on port ${await app.getUrl()}`)
+  await app.listen()
 }
 bootstrap();

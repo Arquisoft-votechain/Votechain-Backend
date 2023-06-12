@@ -2,15 +2,17 @@ import { Injectable } from "@nestjs/common";
 import { Client, ClientProxy, Transport } from "@nestjs/microservices";
 import { AdministratorReponse } from "./administrator.response";
 import { lastValueFrom, map } from "rxjs";
+import { config } from 'dotenv';
 
+config();
 @Injectable()
 export class AdminClient {
 
   @Client({
     transport: Transport.TCP,
     options: {
-      host: process.env.admin_hostname,
-      port: 4205, //Por alguna razon no carga el port desde .env
+      host: process.env.ADMIN_SERVICE_HOSTNAME,
+      port: +process.env.ADMIN_SERVICE_PORT, 
     },
   })
   private readonly clientProxy: ClientProxy;
