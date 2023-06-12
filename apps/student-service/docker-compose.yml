@@ -11,17 +11,17 @@ services:
     env_file:
       - docker.env
  
-  political-party-context:
+  student-context:
 
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: political-party-context
+    container_name: student-context
 
     env_file:
       - .env
     ports:
-      - "4201:4201"
+      - "4204:4204"
     depends_on:
       - postgres
     networks:

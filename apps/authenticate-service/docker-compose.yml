@@ -1,14 +1,14 @@
 version: "3"
 services:
-  api-gateway-context:
+  authenticate-context:
 
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: api-gateway-context
+    container_name: authenticate-context
 
     env_file:
       - .env
     ports:
-      - "3000:3000"
+      - "4200:4200"
     

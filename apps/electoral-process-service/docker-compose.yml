@@ -11,17 +11,17 @@ services:
     env_file:
       - docker.env
  
-  political-party-context:
+  electoral-process-context:
 
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: political-party-context
+    container_name: electoral-process-context
 
     env_file:
       - .env
     ports:
-      - "4201:4201"
+      - "4202:4202"
     depends_on:
       - postgres
     networks:
