@@ -1,7 +1,8 @@
-import { User } from "./User/models/User.entity";
-import { UserService } from "./User/services/User.interface.service";
-import { Notification } from "./Notification/models/Notification.entity";
-import { NotificationService } from "./Notification/services/Notification.interface.service";
+import { NotificationService } from "./notification/services/notification.interface.service";
+import { User } from "./user/models/user.entity";
+import { Notification } from "./notification/models/notification.entity";
+import { UserService } from "./user/services/user.interface.service";
+
 
 export{
     User,

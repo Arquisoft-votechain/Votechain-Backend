@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as SendGrid from '@sendgrid/mail';
 import { EmailRequest } from './dto/emaiRequest.dto';
-import * as fs from 'fs';
-import { emit } from 'process';
+import { emailWithOTP } from 'src/assets/emailTemplates/emailString';
+
 
 @Injectable()
 export class EmailService {
@@ -20,7 +20,8 @@ export class EmailService {
         this.fromEmail = this.configService.get<string>('FromEmail');
         this.fromName = this.configService.get<string>('FromName');
 
-        this.htmlContent = fs.readFileSync('src/assets/emailTemplates/emailWithOtp.html', 'utf-8');
+        //this.htmlContent = fs.readFileSync('src/assets/emailTemplates/emailWithOtp.html', 'utf-8');
+        this.htmlContent = emailWithOTP;
     }
 
     async send(mailRequest: EmailRequest) {
