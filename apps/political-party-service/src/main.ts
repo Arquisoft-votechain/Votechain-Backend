@@ -27,8 +27,8 @@ async function bootstrap() {
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   await app.startAllMicroservices()
-  await app.listen(+process.env.PORT);
-  console.log(`App is running on port ${await app.getUrl()}`)
+  //await app.listen(+process.env.PORT);
+  //console.log(`App is running on port ${await app.getUrl()}`)
 
   
 
