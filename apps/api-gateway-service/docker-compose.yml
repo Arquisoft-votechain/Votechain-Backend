@@ -7,8 +7,10 @@ services:
       dockerfile: Dockerfile
     container_name: api-gateway-context
 
+    volumes:
+      - ./certs:/app/certs
     env_file:
       - .env
     ports:
-      - "3000:3000"
+      - "443:443"
     
