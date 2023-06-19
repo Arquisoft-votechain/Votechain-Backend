@@ -51,6 +51,11 @@ export class ElectoralProcessController {
         return this.clientPoliticalPartyService.send({cmd: 'getPoliticalPartyParticipantsByElectoralId' },electoralId);
     }
 
+    @Get(':electoralId/political-party-participants/votes')
+    async getPoliticalParticipantsWithVotesByElectoralId(@Param('electoralId', ParseIntPipe) electoralId: number){
+        return this.client.send({cmd: 'getPoliticalParticipantsWithVotesByElectoralId' },electoralId);
+    }
+
     @Get(':id')
     async findOneElectoralProcessById(@Param('id',ParseIntPipe) electoralId: number){
         return this.client.send({cmd: 'findOneElectoralProcessById'},electoralId);

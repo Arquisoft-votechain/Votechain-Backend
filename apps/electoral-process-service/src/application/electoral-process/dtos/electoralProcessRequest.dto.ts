@@ -17,4 +17,6 @@ export class ElectoralProcessRequest{
     @Min(1)
     @Max(3)
     status: number;
+
+    votes: number;
 }

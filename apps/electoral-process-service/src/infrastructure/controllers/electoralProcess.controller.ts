@@ -92,4 +92,13 @@ export class ElectoralProcessController {
     return await this.electoralProcessService.getVotesOfElectoralProcessById(electoralId);
   }
 
+  @MessagePattern({ cmd: 'findAllElectoralProcessesWithVotesBySchoolId' })
+  async findAllElectoralProcessesWithVotesBySchoolId(schoolId: number): Promise<ElectoralProcessBasicResponse[]>{
+    return await this.electoralProcessService.findAllElectoralProcessesWithVotesBySchoolId(schoolId);
+  }
+
+  @MessagePattern({ cmd: 'getPoliticalParticipantsWithVotesByElectoralId' })
+  async getPoliticalParticipantsWithVotesByElectoralId(electoralId: number){
+    return await this.electoralProcessService.getPoliticalParticipantsWithVotesByElectoralId(electoralId);
+  }
 }

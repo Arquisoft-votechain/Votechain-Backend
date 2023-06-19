@@ -11,6 +11,7 @@ import { StudentClient } from 'src/shared/student/student.client';
 import { AdminClient } from 'src/shared/administrator/administrator.client';
 import { BaseResponse } from 'src/utils/base.response';
 import { VoteDto, VoteResponse } from 'src/shared/votes/vote.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class ElectoralProcessServiceImpl implements ElectoralProcessService, ProcessAdminService, ProcessStudentService {
@@ -26,6 +27,23 @@ export class ElectoralProcessServiceImpl implements ElectoralProcessService, Pro
     private readonly studentClient: StudentClient,
     private readonly adminClient: AdminClient,
   ) { }
+  
+  
+  async getPoliticalParticipantsWithVotesByElectoralId(electoralProcessId: number) {
+    var politicalParticipants = await this.politicalPartyClient.getPoliticalPartyParticipantsByElectoralId(electoralProcessId);
+    
+
+    await Promise.all(
+      politicalParticipants.map(async (it) => {
+
+        const votesCount = await this.studentClient.findCountVotesByPoliticalPartyParticipantId(it.id);
+        it.votes = votesCount.votes;
+
+      })
+    )
+
+    return politicalParticipants;
+  }
 
   async getVotesOfElectoralProcessById(electoralProcessId: number) {
     const politicalParticipants = await this.politicalPartyClient.getPoliticalPartyParticipantsByElectoralId(electoralProcessId);
@@ -42,6 +60,8 @@ export class ElectoralProcessServiceImpl implements ElectoralProcessService, Pro
 
     return new VoteResponse('',voteDto);
   }
+
+  
  
   async findOneElectoralProcessById(id: number): Promise<ElectoralProcessResponse> {
     try{
@@ -327,6 +347,22 @@ export class ElectoralProcessServiceImpl implements ElectoralProcessService, Pro
 
   async findAllElectoralProcessesBySchoolId(schoolId: number) {
     return this.electoralProcessRepository.find({ where: { schoolId: schoolId } })
+  }
+
+  async findAllElectoralProcessesWithVotesBySchoolId(schoolId: number) {
+    const electorals = await this.electoralProcessRepository.find({ where: { schoolId: schoolId } });
+    var mappedElectorals = plainToInstance(ElectoralProcessBasicResponse,electorals);
+    
+    await Promise.all(
+      mappedElectorals.map(async (it) => {
+
+        const response = await this.getVotesOfElectoralProcessById(it.id);
+        if(response.success) it.votes = response.resource.votes;
+        else it.votes = 0;
+      })
+    )
+
+    return mappedElectorals;
   }
 
 }

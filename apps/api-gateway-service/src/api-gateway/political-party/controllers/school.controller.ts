@@ -110,6 +110,12 @@ export class SchoolController {
         return this.clientElectoralProcessService.send({ cmd: 'findAllElectoralProcessesBySchoolId' }, schoolId );
     }
 
+    @Get(':schoolId/electoral-processes/votes')
+    findAllElectoralProcessesWithVotesBySchoolId(
+        @Param('schoolId', ParseIntPipe) schoolId: number) {
+        return this.clientElectoralProcessService.send({ cmd: 'findAllElectoralProcessesWithVotesBySchoolId' }, schoolId );
+    }
+
     @Get(':schoolId/electoral-processes/:id')
     findOneElectoralProcessBySchoolIdAndId(
         @Param('schoolId', ParseIntPipe) schoolId: number,
