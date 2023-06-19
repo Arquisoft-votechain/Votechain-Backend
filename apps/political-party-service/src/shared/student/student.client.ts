@@ -28,6 +28,16 @@ export class StudentClient {
     return response;
   }
 
+  async getStudentsByClassroomId(classroomId: number): Promise<StudentBasicResponse[]> {
+
+    const response = await lastValueFrom(this.clientProxy.send({ cmd: 'findStudentsByClassroomId' }, classroomId)
+      .pipe(
+        map(response => response as StudentBasicResponse[])
+      ));
+
+    return response;
+  }
+
   async updateStudentById(studenRequest: StudentBasicResponse, id: number): Promise<StudentReponse> {
     console.log(studenRequest);
     const response = await lastValueFrom(this.clientProxy.send({ cmd: 'updateStudent' }, {id,studenRequest})

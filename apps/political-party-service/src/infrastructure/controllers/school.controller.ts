@@ -48,6 +48,11 @@ export class SchoolController {
     return await this.schoolService.getAllClassroomsBySchoolId(id);
   }
 
+  @MessagePattern({ cmd: 'findAllStudentsBySchoolId' })
+  async findAllStudentsBySchoolId(schoolId: number) {
+    return await this.schoolService.getAllStudentsBySchoolId(schoolId);
+  }
+
   @MessagePattern({ cmd: 'findAllMasterPoliticalPartiesBySchoolId' })
   async findAllMasterPoliticalPartiesBySchoolId(id: number) {
     return await this.schoolService.getAllMasterPoliticalPartiesBySchoolId(id);

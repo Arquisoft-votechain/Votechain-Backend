@@ -6,6 +6,8 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { plainToInstance } from "class-transformer";
+import { StudentBasicResponse, StudentReponse } from "src/shared/student/student.response";
+import { StudentClient } from "src/shared/student/student.client";
 
 @Injectable()
 export class SchoolServiceImpl implements SchoolService {
@@ -17,6 +19,7 @@ export class SchoolServiceImpl implements SchoolService {
         private readonly classroomRepository: Repository<Classroom>,
         @InjectRepository(MasterPoliticalParty)
         private readonly masterPoliticalPartyRepository: Repository<MasterPoliticalParty>,
+        private readonly studentClient: StudentClient
     ) { }
 
 
@@ -107,6 +110,33 @@ export class SchoolServiceImpl implements SchoolService {
         });
 
         return mappedClassrooms;
+    }
+
+    async getAllStudentsBySchoolId(schoolId: number): Promise<StudentBasicResponse[] | StudentReponse> {
+        const school = await this.schoolRepository.findOneBy({ id: schoolId });
+        if (!school) return new StudentReponse(`A school with id ${schoolId} was not found`);
+
+        const classrooms = await this.classroomRepository.find({
+            where: {
+                school: {
+                    id: schoolId
+                }
+            },
+            relations: ['school']
+        });
+
+        var students = [];
+
+        await Promise.all(
+            classrooms.map(async (it) => {
+      
+              const studentsByClassroom = await this.studentClient.getStudentsByClassroomId(it.id);
+              students.push(...studentsByClassroom);
+
+            })
+          )
+        
+          return students;
     }
 
     async getAllMasterPoliticalPartiesBySchoolId(schoolId: number): Promise<MasterPoliticalBasicResponse[] | MasterPoliticalResponse> {

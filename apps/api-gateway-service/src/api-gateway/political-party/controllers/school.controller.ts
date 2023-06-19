@@ -32,6 +32,12 @@ export class SchoolController {
         return this.clientPoliticalPartyService.send({ cmd: 'findAllClassroomsBySchoolId' }, id);
     }
 
+    @Get(':id/students')
+    findAllStudentsBySchoolId(@Param('id', ParseIntPipe) id: number) {
+        const schoolId = id;
+        return this.clientPoliticalPartyService.send({ cmd: 'findAllStudentsBySchoolId' }, schoolId);
+    }
+
     @Post()
     createSchool(@Body() requestSchoolDto: RequestSchoolDto) {
         return this.clientPoliticalPartyService.send({ cmd: 'createSchool' }, requestSchoolDto);
