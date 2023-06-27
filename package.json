@@ -30,5 +30,9 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "@maticnetwork/maticjs": "^3.6.0",
+    "web3": "^4.0.2"
   }
 }
