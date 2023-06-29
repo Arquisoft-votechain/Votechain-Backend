@@ -1,13 +1,29 @@
-import { ethers } from 'ethers';
-const contractABI = require('../ruta/al/archivo/Contrato.abi.json'); // Ruta al archivo JSON que contiene el ABI del contrato
+const Web3 = require('web3');
+const contractABI = require('./contracts/VotingContract.json');
 
-const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com'); 
+class VotingContract {
+  constructor(contractAddress, web3Provider) {
+    this.contractAddress = contractAddress;
+    this.web3 = new Web3(web3Provider);
+    this.contract = new this.web3.eth.Contract(contractABI, this.contractAddress);
+  }
 
+  async registerVote(studentId, politicalPartyId, electoralProcessId) {
+    return this.contract.methods.registerVote(studentId, politicalPartyId, electoralProcessId).send({ from: 'YOUR_ADDRESS' });
+  }
 
-const contractAddress = '../smart-contract/vote.sol'; 
+  async getVote(voteId) {
+    return this.contract.methods.getVote(voteId).call();
+  }
 
-const contract = new ethers.Contract(contractAddress, contractABI, provider);
+  async getAllVotesByPoliticalPartyId(politicalPartyId) {
+    return this.contract.methods.getAllVotesByPoliticalPartyId(politicalPartyId).call();
+  }
 
-contract.on('VoteRegistered', (voter, voteHash) => {
-  console.log('Hash del voto registrado:', voteHash);
-});
+  async getAllVotes() {
+    return this.contract.methods.getAllVotes().call();
+  }
+
+}
+
+module.exports = VotingContract;
