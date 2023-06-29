@@ -1,0 +1,16 @@
+version: "3"
+services:
+  api-gateway-context:
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api-gateway-context
+
+    volumes:
+      - ./certs:/app/certs
+    env_file:
+      - .env
+    ports:
+      - "443:443"
+    

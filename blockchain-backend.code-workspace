@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "apps/api-gateway-service"
+		},
+		{
+			"path": "apps/electoral-process-service"
+		},
+		{
+			"path": "apps/authenticate-service"
+		},
+		{
+			"path": "apps/political-party-service"
+		},
+		{
+			"path": "apps/administrator-service"
+		},
+		{
+			"path": "apps/student-service"
+		},
+		{
+			"path": "apps/user-service"
+		}
+	],
+	"settings": {}
+}
