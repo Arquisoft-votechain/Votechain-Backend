@@ -1,12 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { StudentServiceImpl } from '../../application/student/services/studentImpl.service';
 import { CreateStudentDto } from '../../application/student/dto/create-student.dto';
 import { UpdateStudentDto } from '../../application/student/dto/update-student.dto';
 import { MessagePattern } from '@nestjs/microservices';
+import { Web3ServiceImpl, StudentServiceImpl } from 'src/application/index.application';
 
 @Controller('student')
 export class StudentController {
-  constructor(private readonly studentService: StudentServiceImpl) {}
+  constructor(private readonly studentService: StudentServiceImpl, 
+    private readonly web3Service: Web3ServiceImpl
+    ) {}
 
   @Post()
   @MessagePattern({ cmd: 'createStudent' })
@@ -72,5 +74,16 @@ export class StudentController {
   async checkStudentAlreadyVote(data: {electoralProcessId: number, studentId: number}){
     const {electoralProcessId, studentId} = data;
     return await this.studentService.checkStudentAlreadyVote(electoralProcessId,studentId);
+  }
+
+  @MessagePattern({cmd: 'getContractAddress'})
+  async getContractAddress(){
+    const blockN =  await this.web3Service.getContractAddress();
+    return {contractAdress: blockN.toString()}
+  }
+
+  @MessagePattern({cmd: 'sendVote'})
+  async sendVote(){
+   return await this.web3Service.registerVote(1,1,3,4);
   }
 }

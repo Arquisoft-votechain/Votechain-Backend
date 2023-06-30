@@ -6,7 +6,7 @@ import { HttpExceptionFilter } from "src/util/http-exception.filter";
 
 @ApiTags('students')
 @Controller('student')
-@UseFilters(new HttpExceptionFilter())
+//@UseFilters(new HttpExceptionFilter())
 export class StudentController {
   
     constructor(
@@ -27,6 +27,16 @@ export class StudentController {
     @Get()
     findAllStudents() {
         return this.StudentService.send({ cmd: 'findAllStudents' }, '');
+    }
+
+    @Get('contract-address')
+    getContractAddress() {
+        return this.StudentService.send({cmd: 'getContractAddress'},'');
+    }
+    
+    @Post('send-vote')
+    sendVote() {
+        return this.StudentService.send({cmd: 'sendVote'},'');
     }
   
     @Get(':id')
@@ -73,4 +83,6 @@ export class StudentController {
     checkStudentAlreadyVote(@Param('studentId', ParseIntPipe) studentId: number, @Param('electoralProcessId', ParseIntPipe) electoralProcessId: number){
         return this.StudentService.send({ cmd: 'checkStudentAlreadyVote'}, {studentId,electoralProcessId});
     }
+
+
 }

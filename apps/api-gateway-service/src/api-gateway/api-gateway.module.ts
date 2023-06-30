@@ -6,8 +6,9 @@ import { StudentModule } from './student/student.module';
 import { AdministratorModule } from './administrator/administrator.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
+import { SmartContractModule } from './smart-contract/smartContract.module';
 
 @Module({
-  imports: [AuthenticateModule, PoliticalPartyModule, ElectoralProcessModule, StudentModule, AdministratorModule, UserModule],
+  imports: [AuthenticateModule, PoliticalPartyModule, ElectoralProcessModule, StudentModule, AdministratorModule, UserModule, SmartContractModule],
 })
 export class ApiGatewayModule { }

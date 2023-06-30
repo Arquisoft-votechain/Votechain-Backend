@@ -4,6 +4,7 @@ import { VoteModule } from './application/vote/vote.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseModule } from './infrastructure/database/database.module';
+import { Web3Module } from './application/web3/web3.module';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { DatabaseModule } from './infrastructure/database/database.module';
       {isGlobal: true}
     ),
     DatabaseModule,
-    StudentModule, VoteModule],
+    StudentModule, VoteModule, Web3Module],
   controllers: [],
   providers: [],
 })

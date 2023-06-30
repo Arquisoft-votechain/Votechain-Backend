@@ -5,6 +5,7 @@ import { StudentServiceImpl } from './student/services/studentImpl.service';
 import { CreateVoteDto } from './vote/dto/create-vote.dto';
 import { UpdateVoteDto } from './vote/dto/update-vote.dto';
 import { VoteServiceImpl } from './vote/services/voteImpl.service';
+import { Web3ServiceImpl } from './web3/web3Impl.service';
 export{
     CreateStudentDto,
     UpdateStudentDto,
@@ -12,4 +13,5 @@ export{
     UpdateVoteDto,
     StudentServiceImpl,
     VoteServiceImpl,
+    Web3ServiceImpl
 }
