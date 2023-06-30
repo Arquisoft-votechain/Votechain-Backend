@@ -68,4 +68,9 @@ export class StudentController {
     removeStudent(@Param('id') id: string) {
         return this.StudentService.send({ cmd: 'removeStudent' }, id);
     }
+
+    @Get(':studentId/electoralProcess/:electoralProcessId/checkVote')
+    checkStudentAlreadyVote(@Param('studentId', ParseIntPipe) studentId: number, @Param('electoralProcessId', ParseIntPipe) electoralProcessId: number){
+        return this.StudentService.send({ cmd: 'checkStudentAlreadyVote'}, {studentId,electoralProcessId});
+    }
 }

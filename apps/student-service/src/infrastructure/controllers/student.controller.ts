@@ -67,4 +67,10 @@ export class StudentController {
   async getStudentsByPoliticalPartyParticipantId(politicalParticipantId: number){
     return await this.studentService.getStudentsByPoliticalPartyParticipantId(politicalParticipantId);
   }
+
+  @MessagePattern({cmd: 'checkStudentAlreadyVote'})
+  async checkStudentAlreadyVote(data: {electoralProcessId: number, studentId: number}){
+    const {electoralProcessId, studentId} = data;
+    return await this.studentService.checkStudentAlreadyVote(electoralProcessId,studentId);
+  }
 }

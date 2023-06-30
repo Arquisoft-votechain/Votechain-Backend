@@ -11,4 +11,5 @@ export interface StudentService{
     update(id: number, updateStudentDto: UpdateStudentDto);
     remove(id: any): Promise<void>;
     getStudentsByPoliticalPartyParticipantId(politicalPartyParticipantId: number);
+    checkStudentAlreadyVote(electoralId: number, studentId: number);
 }
