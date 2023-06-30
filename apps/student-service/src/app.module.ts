@@ -7,7 +7,9 @@ import { DatabaseModule } from './infrastructure/database/database.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot(
+      {isGlobal: true}
+    ),
     DatabaseModule,
     StudentModule, VoteModule],
   controllers: [],
