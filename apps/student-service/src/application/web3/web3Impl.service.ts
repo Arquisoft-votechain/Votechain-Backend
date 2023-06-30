@@ -12,18 +12,23 @@ export class Web3ServiceImpl {
     private contractAddress: string;
     private contractAbi: any;
 
+    setContractAddress(address: string){
+        this.contractAddress = address;
+    }
+
     constructor(private configService: ConfigService) {
         this.web3Instance = new Web3(
             new Web3.providers.HttpProvider(
                 this.configService.get<string>('WEB3_ENDPOINT')
             )
         )
+        //this.contractAddress = _contractAddres;
+    }
 
+    initParameters(){
         this.privateKey = this.configService.get<string>('PRIVATE_KEY');
         this.account = this.web3Instance.eth.accounts.privateKeyToAccount('0x'+this.privateKey);
 
-
-        this.contractAddress = '0x5f2354F0a59f26497449e4cD5Daa0C0bcF4A4A3e';
         this.contractAbi = [{ "inputs": [], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [{ "internalType": "uint256", "name": "_electoralProcessId", "type": "uint256" }], "name": "countElectoralProcessVotes", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_politicalPartyParticipantId", "type": "uint256" }, { "internalType": "uint256", "name": "_electoralProcessId", "type": "uint256" }], "name": "countPoliticalPartyParticipantVotes", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getContractAddres", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_voteId", "type": "uint256" }, { "internalType": "uint256", "name": "_electoralProcessId", "type": "uint256" }], "name": "getVote", "outputs": [{ "components": [{ "internalType": "uint256", "name": "voteId", "type": "uint256" }, { "internalType": "uint256", "name": "studentId", "type": "uint256" }, { "internalType": "uint256", "name": "politicalPartyParticipantId", "type": "uint256" }], "internalType": "struct VotingContract.Vote", "name": "", "type": "tuple" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "uint256", "name": "_voteId", "type": "uint256" }, { "internalType": "uint256", "name": "_studentId", "type": "uint256" }, { "internalType": "uint256", "name": "_politicalPartyParticipantId", "type": "uint256" }, { "internalType": "uint256", "name": "_electoralProcessId", "type": "uint256" }], "name": "registerVote", "outputs": [], "stateMutability": "nonpayable", "type": "function" }];
        
         this.contract = new this.web3Instance.eth.Contract(this.contractAbi, this.contractAddress);
@@ -31,9 +36,31 @@ export class Web3ServiceImpl {
 
     async getContractAddress() {
         try {
-            const contractAddress = await this.contract.methods.getContractAddres().call({from: '0xb344473f833689806B29F4f2A69306AeAC3a2Ac3'});
+            const contractAddress = await this.contract.methods.getContractAddres().call({from: this.account.address});
             console.log(contractAddress);
             return contractAddress;
+
+        } catch (error) {
+            console.error('Error al llamar al método:', error);
+        }
+    }
+
+    async getElectoralProcessVotes(electoralProcessId: number) {
+        try {
+            const countVotes = await this.contract.methods.countElectoralProcessVotes(electoralProcessId).call({from: this.account.address});
+            console.log(countVotes);
+            return countVotes;
+
+        } catch (error) {
+            console.error('Error al llamar al método:', error);
+        }
+    }
+
+    async getPoliticalPartyParticipantVotes(politicalPartyParticipantId: number, electoralProcessId: number) {
+        try {
+            const countVotes = await this.contract.methods.countPoliticalPartyParticipantVotes(politicalPartyParticipantId,electoralProcessId).call({from: this.account.address});
+            console.log(countVotes);
+            return countVotes;
 
         } catch (error) {
             console.error('Error al llamar al método:', error);
@@ -63,7 +90,7 @@ export class Web3ServiceImpl {
         //console.log(signedTx);
         
         const receipt = await this.web3Instance.eth.sendSignedTransaction(signedTx.rawTransaction);
-        return receipt.transactionHash;
+        return receipt.transactionHash.toString();
     }
 
 }

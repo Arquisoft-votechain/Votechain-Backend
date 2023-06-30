@@ -7,7 +7,7 @@ export class Vote {
     id: number;
 
     @Column('varchar',{
-        length: 50,
+        length: 200,
         name: 'blockchain_code',
         nullable: true
     })

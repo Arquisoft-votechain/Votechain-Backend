@@ -33,6 +33,12 @@ export class PoliticalPartyParticipantController {
   async findCountVotesByPoliticalPartyParticipantId(@Param('politicalParticipantId',ParseIntPipe) politicalParticipantId: number){
     return this.clientStudent.send({cmd:'findCountVotesByPoliticalPartyParticipantId'},politicalParticipantId);
   }
+
+  @Get(':politicalParticipantId/votes-in-blockchain')
+  async findCountVotesByPoliticalPartyIdBlockchain(@Param('politicalParticipantId',ParseIntPipe) politicalPartyParticipantId: number){
+    return this.clientStudent.send({cmd:'findCountVotesByPoliticalPartyIdBlockchain'},politicalPartyParticipantId);
+  }
+
   /*@Get()
   findAllMasterPPs() {
     return this.client.send({ cmd: 'findAllMasterPPs' }, '');

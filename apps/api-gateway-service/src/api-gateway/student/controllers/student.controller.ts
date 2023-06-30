@@ -28,16 +28,6 @@ export class StudentController {
     findAllStudents() {
         return this.StudentService.send({ cmd: 'findAllStudents' }, '');
     }
-
-    @Get('contract-address')
-    getContractAddress() {
-        return this.StudentService.send({cmd: 'getContractAddress'},'');
-    }
-    
-    @Post('send-vote')
-    sendVote() {
-        return this.StudentService.send({cmd: 'sendVote'},'');
-    }
   
     @Get(':id')
     findOneStudent(@Param('id') id: string) {

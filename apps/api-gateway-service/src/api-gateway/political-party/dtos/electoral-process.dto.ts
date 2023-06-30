@@ -23,4 +23,8 @@ export class RequestElectoralProcessDto {
     @Min(1)
     @Max(3)
     status: number;
+
+    @ApiProperty()
+    @IsString()
+    smartContractAddress: string;
 }

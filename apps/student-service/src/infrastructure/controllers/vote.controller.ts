@@ -40,4 +40,15 @@ export class VoteController {
   removeVote(@Param('id') id: string) {
     return this.voteService.remove(+id);
   }
+
+  @MessagePattern({cmd: 'findCountVotesByPoliticalPartyIdBlockchain'})
+  async findCountVotesByPoliticalPartyIdBlockchain(politicalPartyParticipantId: number){
+    return await this.voteService.findCountVotesByPoliticalPartyIdBlockchain(politicalPartyParticipantId);
+  }
+
+  @MessagePattern({cmd: 'findCountVotesByElectoralIdBlockchain'})
+  async findCountVotesByElectoralIdBlockchain(electoralId: number){
+    return await this.voteService.findCountVotesByElectoralIdBlockchain(electoralId);
+  }
+
 }

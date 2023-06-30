@@ -7,10 +7,11 @@ import { Student, Vote } from 'src/domain/index.domain';
 import { StudentServiceImpl } from '../index.application';
 import { UserClient } from 'src/shared/user/user.client';
 import { ClassroomClient } from 'src/shared/classroom/classroom.client';
+import { ElectoralProcessClient } from 'src/shared/electoral-process/electoralProcess.client';
 
 @Module({
   controllers: [VoteController],
-  providers: [VoteServiceImpl, PoliticalPartyParticipantClient, StudentServiceImpl, UserClient, ClassroomClient],
+  providers: [VoteServiceImpl, PoliticalPartyParticipantClient, StudentServiceImpl, ElectoralProcessClient,UserClient, ClassroomClient],
   imports:[
     TypeOrmModule.forFeature([Student]),
     TypeOrmModule.forFeature([Vote]),

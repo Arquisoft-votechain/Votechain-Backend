@@ -18,5 +18,8 @@ export class ElectoralProcessRequest{
     @Max(3)
     status: number;
 
+    @IsString()
+    smartContractAddress: string;
+
     votes: number;
 }

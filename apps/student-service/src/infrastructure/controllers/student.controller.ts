@@ -76,14 +76,4 @@ export class StudentController {
     return await this.studentService.checkStudentAlreadyVote(electoralProcessId,studentId);
   }
 
-  @MessagePattern({cmd: 'getContractAddress'})
-  async getContractAddress(){
-    const blockN =  await this.web3Service.getContractAddress();
-    return {contractAdress: blockN.toString()}
-  }
-
-  @MessagePattern({cmd: 'sendVote'})
-  async sendVote(){
-   return await this.web3Service.registerVote(1,1,3,4);
-  }
 }

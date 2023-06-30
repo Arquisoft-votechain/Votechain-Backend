@@ -28,6 +28,12 @@ export class ElectoralProcess {
     })
     schoolId: number;
 
+    @Column('varchar', {
+        name: 'smart_contract_address',
+        nullable: true
+    })
+    smartContractAddress: string;
+
     @OneToMany(
         () => ProcessStudent,
         (process_student) => process_student.electoralProcess,

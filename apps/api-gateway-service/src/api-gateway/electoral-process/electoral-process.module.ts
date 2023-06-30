@@ -22,6 +22,14 @@ import { ElectoralProcessController } from './controllers/electoral-process.cont
                 port: +process.env.POLITICAL_SERVICE_PORT,
               },
             },
+            {
+              name: 'STUDENT_SERVICE',
+              transport: Transport.TCP,
+              options: {
+                host: process.env.STUDENT_SERVICE_HOSTNAME,
+                port: +process.env.STUDENT_SERVICE_PORT,
+              },
+            },
           ]),
     ],
     controllers: [ElectoralProcessController],
