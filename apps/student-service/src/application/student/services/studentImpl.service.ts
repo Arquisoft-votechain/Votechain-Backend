@@ -8,6 +8,7 @@ import { StudentResponse } from '../dto/student.response';
 import { StudentService } from 'src/domain/student/services/student.interface.service';
 import { UserClient } from 'src/shared/user/user.client';
 import { ClassroomClient } from 'src/shared/classroom/classroom.client';
+import { Vote } from 'src/domain/index.domain';
 
 
 
@@ -16,7 +17,8 @@ export class StudentServiceImpl implements StudentService {
 
   constructor(@InjectRepository(Student) private studentRepository: Repository<Student>,
   private readonly userClient: UserClient,
-  private readonly classroomClient: ClassroomClient){}
+  private readonly classroomClient: ClassroomClient,
+  @InjectRepository(Vote) private voteRepository: Repository<Vote>){}
   
   async getStudentsByPoliticalPartyParticipantId(politicalPartyParticipantId: number) {
     return await this.studentRepository.findBy({politicalPartyId: politicalPartyParticipantId});
@@ -147,5 +149,13 @@ export class StudentServiceImpl implements StudentService {
 
     await this.studentRepository.remove(id);
     //return `This action removes a #${id} student`;
+  }
+
+  async checkStudentAlreadyVote(electoralId: number, studentId: number){
+    const voteAlready = await this.voteRepository.findOneBy({studentId: studentId, electoralProcessId: electoralId});
+
+    if(!voteAlready) return {exist: false};
+
+    return {exist: true};
   }
 }
